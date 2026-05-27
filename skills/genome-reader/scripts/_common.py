@@ -111,12 +111,13 @@ class FormatInfo:
     record_count_estimate: Optional[int]
 
     def to_dict(self) -> dict:
+        # Key order matches the genome-reader spec §6.1.
         return {
             "format": self.format,
             "compressed": self.compressed,
+            "record_count_estimate": self.record_count_estimate,
             "size_bytes": self.size_bytes,
             "index_present": self.index_present,
-            "record_count_estimate": self.record_count_estimate,
         }
 
 

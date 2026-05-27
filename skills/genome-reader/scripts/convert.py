@@ -15,6 +15,7 @@ from __future__ import annotations
 import csv
 import gzip
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -137,15 +138,15 @@ def gff_to_bed(path: str) -> int:
             start = int(parts[3]) - 1  # GFF 1-closed → BED 0-half-open
             end = int(parts[4])
             attrs = parts[8]
-            # Try to pull ID= or gene_id "..."
+            # GFF3 uses ID=value; GTF uses gene_id "value". Prefer GFF3 ID.
             name = "."
-            for kv in attrs.replace(";", " ").split():
-                if kv.startswith("ID="):
-                    name = kv[3:]
-                    break
-                if kv.startswith("gene_id"):
-                    name = kv.split("=", 1)[-1].strip('"')
-                    break
+            m = re.search(r'(?:^|;)\s*ID=([^;]+)', attrs)
+            if m:
+                name = m.group(1).strip()
+            else:
+                m = re.search(r'gene_id\s+"([^"]+)"', attrs)
+                if m:
+                    name = m.group(1)
             score = parts[5]
             strand = parts[6]
             print("\t".join([chrom, str(start), str(end), name, score, strand]))
