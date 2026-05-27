@@ -88,7 +88,7 @@ Output depends on the detected format:
 | format          | reported                                                                                          |
 |-----------------|---------------------------------------------------------------------------------------------------|
 | FASTA           | sequence count, total length, min/median/mean/max length, N50, GC%, ambiguous base count          |
-| FASTQ           | read count, length distribution, mean per-base quality, Phred encoding (33/64), adapter hit count |
+| FASTQ           | read count, length distribution, overall + per-base mean quality, Phred encoding (33/64), adapter hit count |
 | VCF             | variant count, SNV/indel/MNP/SV split, Ts/Tv, per-chrom counts, PASS vs filtered, sample list     |
 | BAM/SAM/CRAM    | read count, mapped vs unmapped, duplication rate, contig list, coverage proxy if index present    |
 | BED/GFF/GTF     | feature count, feature types, span per chromosome, sources                                        |
