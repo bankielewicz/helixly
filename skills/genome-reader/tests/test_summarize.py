@@ -43,6 +43,18 @@ def test_fastq_summary(fixtures_dir):
     assert s["phred_encoding"] == "Phred+33"
 
 
+def test_fastq_per_base_quality(fixtures_dir):
+    """Regression for #4: per_base_mean_quality is a list of floats, length == max read length."""
+    s = _summarize(fixtures_dir / "sample.fastq")
+    pbq = s["per_base_mean_quality"]
+    assert isinstance(pbq, list)
+    assert len(pbq) == 12, f"expected length 12 (max read length), got {len(pbq)}"
+    assert all(isinstance(q, float) for q in pbq), pbq
+    # sample.fastq qual chars per position: I(73), H(72), #(35), I(73) → mean 63.25, minus 33 → 30.25
+    # All 4 reads are uniform within each read, so every position should equal 30.25.
+    assert pbq == [30.25] * 12, pbq
+
+
 def test_vcf_summary(fixtures_dir):
     s = _summarize(fixtures_dir / "sample.vcf")
     assert s["format"] == "vcf"
