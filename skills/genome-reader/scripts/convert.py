@@ -75,34 +75,136 @@ def fastq_to_fasta(path: str) -> int:
     return 0
 
 
-def vcf_to_table(path: str, sep: str) -> int:
+_INT_MISSING = -2147483648  # BCF integer-missing sentinel
+
+
+def _vcf_gt_strs(v) -> list[str] | None:
+    """Per-sample GT strings like '0/1' or '.|.'. Returns None if unavailable."""
+    try:
+        gts = v.genotypes
+    except Exception:
+        return None
+    if gts is None:
+        return None
+    out: list[str] = []
+    for gt in gts:
+        if not gt:
+            out.append("./.")
+            continue
+        phased = bool(gt[-1])
+        alleles = gt[:-1]
+        sep = "|" if phased else "/"
+        out.append(sep.join(str(a) if a >= 0 else "." for a in alleles))
+    return out
+
+
+def _vcf_format_strs(v, key: str, n_samples: int) -> list[str]:
+    """Per-sample stringified values for one FORMAT key (non-GT)."""
+    try:
+        arr = v.format(key)
+    except Exception:
+        return [""] * n_samples
+    if arr is None:
+        return [""] * n_samples
+    out: list[str] = []
+    for si in range(n_samples):
+        if si >= len(arr):
+            out.append("")
+            continue
+        val = arr[si]
+        if hasattr(val, "__iter__") and not isinstance(val, (str, bytes)):
+            parts: list[str] = []
+            for x in val:
+                if hasattr(x, "decode"):
+                    x = x.decode("utf-8")
+                if isinstance(x, float) and x != x:
+                    continue
+                if isinstance(x, int) and x == _INT_MISSING:
+                    continue
+                parts.append(str(x))
+            out.append(",".join(parts))
+        else:
+            if hasattr(val, "decode"):
+                val = val.decode("utf-8")
+            if isinstance(val, float) and val != val:
+                out.append("")
+            elif isinstance(val, int) and val == _INT_MISSING:
+                out.append("")
+            else:
+                out.append(str(val))
+    return out
+
+
+def vcf_to_table(path: str, sep: str, columns: list[str] | None = None) -> int:
     import cyvcf2
     vcf = cyvcf2.VCF(path)
-    w = csv.writer(sys.stdout, delimiter=sep, lineterminator="\n")
+    samples = list(vcf.samples)
     # Parse header text directly — keeps us off cyvcf2 internal APIs that vary by version.
     info_keys: list[str] = []
+    format_keys: list[str] = []
     for line in vcf.raw_header.splitlines():
         if line.startswith("##INFO=<"):
             for kv in line[len("##INFO=<"):].rstrip(">").split(","):
                 if kv.startswith("ID="):
                     info_keys.append(kv[3:])
                     break
+        elif line.startswith("##FORMAT=<"):
+            for kv in line[len("##FORMAT=<"):].rstrip(">").split(","):
+                if kv.startswith("ID="):
+                    format_keys.append(kv[3:])
+                    break
     info_keys = sorted(set(info_keys))
+    format_keys = sorted(set(format_keys))
     base = ["chrom", "pos", "id", "ref", "alt", "qual", "filter"]
-    w.writerow(base + info_keys)
+    sample_cols = [f"{s}.{k}" for s in samples for k in format_keys]
+    all_cols = base + info_keys + sample_cols
+    if columns is not None:
+        unknown = [c for c in columns if c not in all_cols]
+        if unknown:
+            print(
+                f"convert: unknown column(s): {','.join(unknown)}",
+                file=sys.stderr,
+            )
+            print(
+                f"available columns: {','.join(all_cols)}",
+                file=sys.stderr,
+            )
+            return 2
+        out_cols = list(columns)
+    else:
+        out_cols = all_cols
+    w = csv.writer(sys.stdout, delimiter=sep, lineterminator="\n")
+    w.writerow(out_cols)
     for v in vcf:
-        row = [
-            v.CHROM, v.POS, v.ID or ".",
-            v.REF or ".", ",".join(v.ALT) if v.ALT else ".",
-            "" if v.QUAL is None else v.QUAL,
-            v.FILTER if v.FILTER is not None else "PASS",
-        ]
+        row_map: dict[str, object] = {
+            "chrom": v.CHROM,
+            "pos": v.POS,
+            "id": v.ID or ".",
+            "ref": v.REF or ".",
+            "alt": ",".join(v.ALT) if v.ALT else ".",
+            "qual": "" if v.QUAL is None else v.QUAL,
+            "filter": v.FILTER if v.FILTER is not None else "PASS",
+        }
         for k in info_keys:
             val = v.INFO.get(k)
             if isinstance(val, tuple):
                 val = ",".join(str(x) for x in val)
-            row.append("" if val is None else val)
-        w.writerow(row)
+            row_map[k] = "" if val is None else val
+        if samples and format_keys:
+            gt_strs = _vcf_gt_strs(v) if "GT" in format_keys else None
+            for k in format_keys:
+                if k == "GT":
+                    continue
+                fvals = _vcf_format_strs(v, k, len(samples))
+                for si, s in enumerate(samples):
+                    row_map[f"{s}.{k}"] = fvals[si]
+            if "GT" in format_keys:
+                for si, s in enumerate(samples):
+                    if gt_strs is not None and si < len(gt_strs):
+                        row_map[f"{s}.GT"] = gt_strs[si]
+                    else:
+                        row_map[f"{s}.GT"] = "./."
+        w.writerow([row_map.get(c, "") for c in out_cols])
     return 0
 
 
@@ -242,7 +344,11 @@ REFUSAL_MSG = (
 def main(argv: list[str]) -> int:
     args = argv[1:]
     if "--to" not in args or len(args) < 3:
-        print("usage: convert.py <input> --to <format> [--build GRCh37|GRCh38]", file=sys.stderr)
+        print(
+            "usage: convert.py <input> --to <format> "
+            "[--build GRCh37|GRCh38] [--columns c1,c2,...]",
+            file=sys.stderr,
+        )
         return 2
     i = args.index("--to")
     path = args[0]
@@ -253,6 +359,13 @@ def main(argv: list[str]) -> int:
     map_override = None
     if "--rsid-map" in args:
         map_override = args[args.index("--rsid-map") + 1]
+    columns: list[str] | None = None
+    if "--columns" in args:
+        raw = args[args.index("--columns") + 1]
+        columns = [c.strip() for c in raw.split(",") if c.strip()]
+        if not columns:
+            print("convert: --columns requires a non-empty comma list", file=sys.stderr)
+            return 2
     try:
         info = detect_format(path)
     except FileNotFoundError:
@@ -263,7 +376,10 @@ def main(argv: list[str]) -> int:
     if src == "fastq" and target == "fasta":
         return fastq_to_fasta(path)
     if src == "vcf" and target in {"tsv", "csv"}:
-        return vcf_to_table(path, "\t" if target == "tsv" else ",")
+        return vcf_to_table(path, "\t" if target == "tsv" else ",", columns=columns)
+    if columns is not None:
+        print("convert: --columns is only supported for VCF --to tsv|csv", file=sys.stderr)
+        return 2
     if src == "bed" and target in {"gff", "gff3"}:
         return bed_to_gff(path)
     if src in {"gff", "gtf"} and target == "bed":
