@@ -60,6 +60,8 @@ def main(argv: list[str]) -> int:
     per_read_mean: list[float] = []
     lengths: list[int] = []
     gc_pct: list[float] = []
+    n_per_pos: list[int] = []
+    pos_count: list[int] = []
     n_count_total = 0
     base_total = 0
     seq_counter: Counter = Counter()
@@ -68,12 +70,24 @@ def main(argv: list[str]) -> int:
     for seq, qual in _read_fastq(path):
         if not seq or not qual:
             continue
-        lengths.append(len(seq))
+        L = len(seq)
+        lengths.append(L)
         gc = (seq.count("G") + seq.count("C") + seq.count("g") + seq.count("c"))
-        gc_pct.append(round(100 * gc / len(seq), 2) if seq else 0.0)
+        gc_pct.append(round(100 * gc / L, 2))
         n_count_total += seq.upper().count("N")
-        base_total += len(seq)
+        base_total += L
         seq_counter[seq] += 1
+
+        # Per-position N content (seq-indexed).
+        while len(n_per_pos) < L:
+            n_per_pos.append(0)
+            pos_count.append(0)
+        for i, b in enumerate(seq):
+            pos_count[i] += 1
+            if b in "Nn":
+                n_per_pos[i] += 1
+
+        # Per-position quality (qual-indexed; may exceed L on malformed reads).
         rq: list[int] = []
         for i, c in enumerate(qual):
             v = ord(c)
@@ -125,17 +139,6 @@ def main(argv: list[str]) -> int:
     ax.set_title("Per-read GC%")
     figs_b64["gc"] = _fig_to_b64(fig)
 
-    # N content per position (second pass over the file)
-    max_len = max(lengths)
-    n_per_pos = [0] * max_len
-    pos_count = [0] * max_len
-    for seq, _ in _read_fastq(path):
-        for i, b in enumerate(seq):
-            if i >= max_len:
-                break
-            pos_count[i] += 1
-            if b in "Nn":
-                n_per_pos[i] += 1
     n_pct = [100 * n / c if c else 0 for n, c in zip(n_per_pos, pos_count)]
     fig, ax = plt.subplots(figsize=(10, 3))
     ax.plot(range(1, len(n_pct) + 1), n_pct)
