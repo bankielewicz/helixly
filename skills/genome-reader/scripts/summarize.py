@@ -76,6 +76,8 @@ def summarize_fastq(path: str) -> dict[str, Any]:
     qual_chars = 0
     min_qchar = 255
     max_qchar = 0
+    per_pos_sum: list[int] = []
+    per_pos_count: list[int] = []
     adapter_hits = 0
     sampled = 0
     adapters = ("AGATCGGAAGAGC", "CTGTCTCTTATACA")  # Illumina TruSeq, Nextera
@@ -90,7 +92,8 @@ def summarize_fastq(path: str) -> dict[str, Any]:
             if not qual:
                 break
             lengths.append(len(seq))
-            for c in qual:
+            seq_len = len(seq)
+            for c_idx, c in enumerate(qual):
                 v = ord(c)
                 qual_sum += v
                 qual_chars += 1
@@ -98,6 +101,13 @@ def summarize_fastq(path: str) -> dict[str, Any]:
                     min_qchar = v
                 if v > max_qchar:
                     max_qchar = v
+                # Per-position arrays index by sequence position; qual chars past len(seq) are malformed.
+                if c_idx < seq_len:
+                    if c_idx >= len(per_pos_sum):
+                        per_pos_sum.append(0)
+                        per_pos_count.append(0)
+                    per_pos_sum[c_idx] += v
+                    per_pos_count[c_idx] += 1
             if sampled < 100_000:
                 if any(ad in seq for ad in adapters):
                     adapter_hits += 1
@@ -107,10 +117,15 @@ def summarize_fastq(path: str) -> dict[str, Any]:
     # Phred encoding heuristic: Phred+33 chars in [33,74]; Phred+64 in [59,104].
     if min_qchar < 59:
         encoding = "Phred+33"
-        mean_qual = round((qual_sum / qual_chars) - 33, 2)
+        offset = 33
     else:
         encoding = "Phred+64"
-        mean_qual = round((qual_sum / qual_chars) - 64, 2)
+        offset = 64
+    mean_qual = round((qual_sum / qual_chars) - offset, 2)
+    per_base_mean_quality = [
+        round((per_pos_sum[i] / per_pos_count[i]) - offset, 2)
+        for i in range(len(per_pos_sum))
+    ]
     return {
         "format": "fastq",
         "read_count": len(lengths),
@@ -119,6 +134,7 @@ def summarize_fastq(path: str) -> dict[str, Any]:
         "median_length": int(statistics.median(lengths)),
         "mean_length": round(statistics.fmean(lengths), 2),
         "mean_quality": mean_qual,
+        "per_base_mean_quality": per_base_mean_quality,
         "phred_encoding": encoding,
         "adapter_hits_first_100k": adapter_hits,
         "sampled_for_adapters": sampled,
