@@ -89,5 +89,17 @@ def test_consumer_dna_summary(fixtures_dir):
     assert s["format"] == "consumer_dna:23andme"
     assert s["snp_count"] == 5
     assert s["build"] == "GRCh37"
-    # rs4 is "--" → no-call
-    assert s["no_call_rate"] > 0
+    # rs4 is "--" → exactly 1 of 5 is a no-call (rate = 0.2)
+    assert s["no_call_rate"] == round(1 / 5, 5)
+
+
+def test_no_call_predicate_rejects_valid_alleles(tmp_path):
+    """Regression for #12: valid two-letter genotypes must not match the no-call gate."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    from summarize import _NO_CALL_TOKENS
+
+    for valid in ("AG", "CT", "GG", "AA", "TT"):
+        assert valid.strip() not in _NO_CALL_TOKENS
+
+    for missing in ("", "-", "--", "0", "00", "0 0"):
+        assert missing.strip() in _NO_CALL_TOKENS
