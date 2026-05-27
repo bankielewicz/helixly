@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract a genomic window from FASTA/VCF/BAM/GFF/GTF.
+"""Extract a genomic window from FASTA/VCF/BAM/BED/GFF/GTF.
 
 Region syntax: chrom:start-end (1-based, inclusive)
 """
