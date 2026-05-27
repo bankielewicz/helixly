@@ -42,6 +42,54 @@ def test_vcf_to_tsv(fixtures_dir):
     assert len(lines) == 7
 
 
+def test_vcf_to_tsv_includes_sample_format(fixtures_dir):
+    """Regression for #2: VCF→TSV must flatten FORMAT/sample into <sample>.<KEY> columns."""
+    p = _run([str(SCRIPTS / "convert.py"), str(fixtures_dir / "sample.vcf"), "--to", "tsv"])
+    assert p.returncode == 0
+    rows = [r.split("\t") for r in p.stdout.strip().splitlines()]
+    header, *body = rows
+    assert "S1.GT" in header, f"expected S1.GT in header, got {header}"
+    gt_idx = header.index("S1.GT")
+    # First data row's S1.GT must be 0/1 per sample.vcf
+    assert body[0][gt_idx] == "0/1", f"expected first S1.GT == 0/1, got {body[0][gt_idx]}"
+    # Every data row has a non-empty GT
+    for r in body:
+        assert r[gt_idx], f"unexpected empty S1.GT in row {r}"
+
+
+def test_vcf_to_tsv_columns_subset(fixtures_dir):
+    """Regression for #3: --columns subsets and preserves requested order."""
+    p = _run([
+        str(SCRIPTS / "convert.py"),
+        str(fixtures_dir / "sample.vcf"),
+        "--to", "tsv",
+        "--columns", "chrom,pos,DP",
+    ])
+    assert p.returncode == 0, p.stderr
+    rows = [r.split("\t") for r in p.stdout.strip().splitlines()]
+    assert rows[0] == ["chrom", "pos", "DP"]
+    assert len(rows) == 7  # 1 header + 6 data
+    assert rows[1][0] == "chr1"
+    assert rows[1][1] == "100"
+    assert rows[1][2] == "20"
+
+
+def test_vcf_to_tsv_columns_unknown_refuses(fixtures_dir):
+    """Regression for #3: unknown column exits non-zero and reports the name + available list."""
+    p = _run([
+        str(SCRIPTS / "convert.py"),
+        str(fixtures_dir / "sample.vcf"),
+        "--to", "tsv",
+        "--columns", "chrom,bogus",
+    ])
+    assert p.returncode != 0
+    assert "bogus" in p.stderr
+    assert "available columns" in p.stderr
+    # The available list must mention real columns, including S1.GT (issue #2 introduces them)
+    assert "S1.GT" in p.stderr
+    assert "DP" in p.stderr
+
+
 def test_bed_to_gff(fixtures_dir):
     p = _run([str(SCRIPTS / "convert.py"), str(fixtures_dir / "sample.bed"), "--to", "gff"])
     assert p.returncode == 0
