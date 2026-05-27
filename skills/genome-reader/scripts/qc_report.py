@@ -16,15 +16,11 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import die, open_maybe_gzip  # noqa: E402
+from _common import die, open_maybe_gzip, phred_offset  # noqa: E402
 
 import matplotlib  # noqa: E402
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
-
-
-def _phred_offset(min_char: int) -> int:
-    return 33 if min_char < 59 else 64
 
 
 def _read_fastq(path: str):
@@ -66,6 +62,7 @@ def main(argv: list[str]) -> int:
     base_total = 0
     seq_counter: Counter = Counter()
     min_qchar = 255
+    max_qchar = 0
 
     for seq, qual in _read_fastq(path):
         if not seq or not qual:
@@ -93,6 +90,8 @@ def main(argv: list[str]) -> int:
             v = ord(c)
             if v < min_qchar:
                 min_qchar = v
+            if v > max_qchar:
+                max_qchar = v
             rq.append(v)
             while len(per_base_quals) <= i:
                 per_base_quals.append([])
@@ -102,7 +101,7 @@ def main(argv: list[str]) -> int:
 
     if not lengths:
         die("no reads in input")
-    offset = _phred_offset(min_qchar)
+    offset, _ = phred_offset(min_qchar, max_qchar)
 
     figs_b64: dict[str, str] = {}
 
