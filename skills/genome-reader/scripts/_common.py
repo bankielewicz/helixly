@@ -327,8 +327,58 @@ def detect_consumer_dna_build(path: str | os.PathLike) -> Optional[str]:
     return None
 
 
+def parse_flat_args(
+    args: list[str], value_flags: set[str]
+) -> tuple[str | None, dict[str, str]]:
+    """Parse a flat-flag CLI tolerant of positional placement.
+
+    Each flag in `value_flags` consumes its following argument. Whatever
+    bare token remains is returned as the positional input path.
+
+    Returns (positional, flags_dict). `positional` is None when zero or
+    more than one bare token survived, or when a value flag was missing
+    its argument; the caller is expected to print a usage error.
+    """
+    flags: dict[str, str] = {}
+    bare: list[str] = []
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a in value_flags:
+            if i + 1 >= len(args):
+                return None, flags
+            flags[a] = args[i + 1]
+            i += 2
+            continue
+        bare.append(a)
+        i += 1
+    if len(bare) != 1:
+        return None, flags
+    return bare[0], flags
+
+
 def warn(msg: str) -> None:
     print(f"warning: {msg}", file=sys.stderr)
+
+
+def phred_offset(min_qchar: int, max_qchar: int) -> tuple[int, str]:
+    """Infer Phred encoding offset from the observed qual-char range.
+
+    Phred+33 uses chars in [33, 74]; Phred+64 uses chars in [59, 104]. The
+    overlap is [59, 74], so deciding on `min_qchar` alone misclassifies a
+    high-quality Phred+33 file (every char >= 59) as Phred+64. Inspect both
+    ends and default the overlap to Phred+33 (modern Illumina), with a
+    stderr note when the range cannot be resolved unambiguously.
+    """
+    if max_qchar > 74:
+        return 64, "Phred+64"
+    if min_qchar < 59:
+        return 33, "Phred+33"
+    warn(
+        f"FASTQ quality char range [{min_qchar}, {max_qchar}] falls in the "
+        "Phred+33/Phred+64 overlap; assuming Phred+33"
+    )
+    return 33, "Phred+33"
 
 
 def die(msg: str, code: int = 2) -> "NoReturn":

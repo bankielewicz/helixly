@@ -43,6 +43,27 @@ def test_fastq_summary(fixtures_dir):
     assert s["phred_encoding"] == "Phred+33"
 
 
+def test_fastq_phred_high_quality_p33(tmp_path):
+    """Regression for #11: a Phred+33 FASTQ where every qual char >= 59 is not mislabeled Phred+64.
+
+    Qual chars 'ABCDEFG' have ord 65-71 — all in the [59, 74] overlap range.
+    Inspecting min_qchar alone would misclassify this as Phred+64.
+    """
+    fq = tmp_path / "high_p33.fastq"
+    fq.write_text("@r1\nACGTACG\n+\nABCDEFG\n")
+    s = _summarize(fq)
+    assert s["phred_encoding"] == "Phred+33", s
+
+
+def test_fastq_phred_high_chars_p64(tmp_path):
+    """Regression for #11: a qual char > 74 forces Phred+64."""
+    fq = tmp_path / "p64.fastq"
+    # Chars 'XYZ[\\]^' have ord 88-94, all well above 74 -> Phred+64.
+    fq.write_text("@r1\nACGTACG\n+\nXYZ[\\]^\n")
+    s = _summarize(fq)
+    assert s["phred_encoding"] == "Phred+64", s
+
+
 def test_fastq_per_base_quality(fixtures_dir):
     """Regression for #4: per_base_mean_quality is a list of floats, length == max read length."""
     s = _summarize(fixtures_dir / "sample.fastq")
