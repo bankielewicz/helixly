@@ -327,6 +327,36 @@ def detect_consumer_dna_build(path: str | os.PathLike) -> Optional[str]:
     return None
 
 
+def parse_flat_args(
+    args: list[str], value_flags: set[str]
+) -> tuple[str | None, dict[str, str]]:
+    """Parse a flat-flag CLI tolerant of positional placement.
+
+    Each flag in `value_flags` consumes its following argument. Whatever
+    bare token remains is returned as the positional input path.
+
+    Returns (positional, flags_dict). `positional` is None when zero or
+    more than one bare token survived, or when a value flag was missing
+    its argument; the caller is expected to print a usage error.
+    """
+    flags: dict[str, str] = {}
+    bare: list[str] = []
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a in value_flags:
+            if i + 1 >= len(args):
+                return None, flags
+            flags[a] = args[i + 1]
+            i += 2
+            continue
+        bare.append(a)
+        i += 1
+    if len(bare) != 1:
+        return None, flags
+    return bare[0], flags
+
+
 def warn(msg: str) -> None:
     print(f"warning: {msg}", file=sys.stderr)
 

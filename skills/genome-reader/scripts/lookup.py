@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import detect_format, die, iter_consumer_dna  # noqa: E402
+from _common import detect_format, die, iter_consumer_dna, parse_flat_args  # noqa: E402
 
 
 def _load_rsids(arg: str) -> list[str]:
@@ -29,12 +29,11 @@ def _load_rsids(arg: str) -> list[str]:
 
 
 def main(argv: list[str]) -> int:
-    args = argv[1:]
-    if "--rsids" not in args or len(args) < 3:
+    path, flags = parse_flat_args(argv[1:], {"--rsids"})
+    if path is None or "--rsids" not in flags:
         print("usage: lookup.py <consumer_dna_file> --rsids <file_or_csv>", file=sys.stderr)
         return 2
-    path = args[0]
-    rsid_arg = args[args.index("--rsids") + 1]
+    rsid_arg = flags["--rsids"]
     try:
         info = detect_format(path)
     except FileNotFoundError:

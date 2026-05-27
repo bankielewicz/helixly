@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import detect_format, die, open_maybe_gzip  # noqa: E402
+from _common import detect_format, die, open_maybe_gzip, parse_flat_args  # noqa: E402
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 COMPLEMENT = str.maketrans("ACGTUNacgtun", "TGCAANtgcaan")
@@ -71,16 +71,13 @@ def _iter_fasta(path: str):
 
 
 def main(argv: list[str]) -> int:
-    args = argv[1:]
-    if "--frame" not in args or len(args) < 3:
+    path, flags = parse_flat_args(argv[1:], {"--frame", "--table"})
+    if path is None or "--frame" not in flags:
         print("usage: translate.py <fasta> --frame <1|2|3|-1|-2|-3|all> [--table 1]",
               file=sys.stderr)
         return 2
-    path = args[0]
-    frame_arg = args[args.index("--frame") + 1]
-    table_id = "1"
-    if "--table" in args:
-        table_id = args[args.index("--table") + 1]
+    frame_arg = flags["--frame"]
+    table_id = flags.get("--table", "1")
     try:
         info = detect_format(path)
     except FileNotFoundError:

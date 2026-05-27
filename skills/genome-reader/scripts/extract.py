@@ -10,7 +10,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _common import detect_format, die, index_or_build, open_maybe_gzip  # noqa: E402
+from _common import (  # noqa: E402
+    detect_format, die, index_or_build, open_maybe_gzip, parse_flat_args,
+)
 
 
 def _parse_region(s: str) -> tuple[str, int, int]:
@@ -83,15 +85,12 @@ def extract_intervals(path: str, chrom: str, start: int, end: int, fmt: str) -> 
 
 
 def main(argv: list[str]) -> int:
-    args = argv[1:]
-    if "--region" not in args or len(args) < 3:
+    path, flags = parse_flat_args(argv[1:], {"--region"})
+    if path is None or "--region" not in flags:
         print("usage: extract.py <path> --region chrom:start-end", file=sys.stderr)
         return 2
-    i = args.index("--region")
-    region = args[i + 1]
-    path = args[i - 1] if i > 0 else args[0]
     try:
-        chrom, start, end = _parse_region(region)
+        chrom, start, end = _parse_region(flags["--region"])
     except ValueError as e:
         die(str(e))
     try:
