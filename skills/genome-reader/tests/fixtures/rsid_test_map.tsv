@@ -1,0 +1,4 @@
+# rsid	chrom	pos	ref	alt
+rs1	chr1	100	A	G
+rs2	chr1	200	C	T
+rs3	chr2	500	G	A

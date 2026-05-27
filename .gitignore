@@ -1,0 +1,58 @@
+# Personal / workspace-only directories and files
+bryan/
+karen/
+tmp/
+.claude/
+claude.md
+
+# Large fetched reference assets (bundled stubs are tracked; full maps are not)
+skills/genome-reader/assets/*.full.tsv.gz
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Packaging / build artifacts
+*.egg-info/
+*.egg
+build/
+dist/
+wheels/
+*.whl
+pip-wheel-metadata/
+
+# Test / type / lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs / local env files
+*.log
+.env
+.env.local
