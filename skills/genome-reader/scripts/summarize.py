@@ -204,12 +204,14 @@ def summarize_alignments(path: str, fmt: str) -> dict[str, Any]:
     unmapped = 0
     dups = 0
     total = 0
+    aligned_bases = 0
     for read in af.fetch(until_eof=True):
         total += 1
         if read.is_unmapped:
             unmapped += 1
         else:
             mapped += 1
+            aligned_bases += read.query_alignment_length or 0
         if read.is_duplicate:
             dups += 1
     contigs = list(af.references) if af.references else []
@@ -221,15 +223,10 @@ def summarize_alignments(path: str, fmt: str) -> dict[str, Any]:
         "duplicate_rate": round(dups / total, 5) if total else 0.0,
         "contigs": contigs,
     }
-    # Try a cheap mean-coverage if index present
-    try:
-        idx_stats = af.get_index_statistics() if af.has_index() else None
-        if idx_stats:
-            out["mean_coverage_proxy"] = round(
-                sum(s.mapped for s in idx_stats) / max(1, len(contigs)), 3
-            )
-    except (ValueError, AttributeError):
-        pass
+    if af.has_index():
+        ref_len = sum(af.lengths) if af.lengths else 0
+        if ref_len > 0:
+            out["mean_coverage"] = round(aligned_bases / ref_len, 5)
     af.close()
     return out
 
