@@ -79,6 +79,18 @@ def test_bam_summary(fixtures_dir):
     assert s["duplicate_rate"] > 0
 
 
+def test_bam_mean_coverage(fixtures_dir):
+    """Regression for #5: mean_coverage = sum(aligned_bases) / sum(reference_lengths).
+
+    sample.bam: 4 mapped reads × 10 aligned bases = 40 bases over two 100000 bp
+    reference contigs (200000 bp total). Expected: 40 / 200000 = 0.0002.
+    """
+    s = _summarize(fixtures_dir / "sample.bam")
+    assert "mean_coverage_proxy" not in s
+    assert "mean_coverage" in s
+    assert s["mean_coverage"] == 0.0002
+
+
 def test_bed_summary(fixtures_dir):
     s = _summarize(fixtures_dir / "sample.bed")
     assert s["format"] == "bed"
