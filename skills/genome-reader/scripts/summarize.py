@@ -13,7 +13,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _common import (  # noqa: E402
     FormatInfo, detect_format, detect_consumer_dna_build, die,
-    iter_consumer_dna, open_maybe_gzip,
+    iter_consumer_dna, open_maybe_gzip, phred_offset,
 )
 
 
@@ -114,13 +114,7 @@ def summarize_fastq(path: str) -> dict[str, Any]:
                 sampled += 1
     if not lengths:
         return {"format": "fastq", "read_count": 0}
-    # Phred encoding heuristic: Phred+33 chars in [33,74]; Phred+64 in [59,104].
-    if min_qchar < 59:
-        encoding = "Phred+33"
-        offset = 33
-    else:
-        encoding = "Phred+64"
-        offset = 64
+    offset, encoding = phred_offset(min_qchar, max_qchar)
     mean_qual = round((qual_sum / qual_chars) - offset, 2)
     per_base_mean_quality = [
         round((per_pos_sum[i] / per_pos_count[i]) - offset, 2)

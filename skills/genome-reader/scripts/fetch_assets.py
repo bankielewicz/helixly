@@ -8,6 +8,9 @@ Currently supported:
 Sources are dbSNP common-variants VCFs from NCBI. The script prints what it
 will do and asks for confirmation before any network call.
 
+Network timeout: connect + per-chunk read default is 30 seconds. Override by
+setting the HELIXLY_FETCH_TIMEOUT environment variable (seconds, float ok).
+
 Usage:
   python scripts/fetch_assets.py <name> [<name> ...]
   python scripts/fetch_assets.py --yes <name>           # skip confirmation
@@ -16,9 +19,26 @@ Usage:
 from __future__ import annotations
 
 import gzip
+import os
 import sys
 import urllib.request
 from pathlib import Path
+
+DEFAULT_TIMEOUT_SECONDS = 30
+
+
+def _timeout_seconds() -> float:
+    raw = os.environ.get("HELIXLY_FETCH_TIMEOUT")
+    if raw:
+        try:
+            return float(raw)
+        except ValueError:
+            print(
+                f"warning: ignoring invalid HELIXLY_FETCH_TIMEOUT={raw!r}, "
+                f"using default {DEFAULT_TIMEOUT_SECONDS}s",
+                file=sys.stderr,
+            )
+    return DEFAULT_TIMEOUT_SECONDS
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 
@@ -55,26 +75,36 @@ def _download_and_filter(url: str, out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     tmp = out_path.with_suffix(out_path.suffix + ".part")
     print(f"  downloading {url}", file=sys.stderr)
-    with urllib.request.urlopen(url) as resp:
-        with gzip.open(resp, "rb") as in_fh, gzip.open(tmp, "wt") as out_fh:
-            out_fh.write("# rsid\tchrom\tpos\tref\talt\n")
-            for raw in in_fh:
-                line = raw.decode("utf-8", errors="replace")
-                if line.startswith("#"):
-                    continue
-                parts = line.rstrip("\n").split("\t", 7)
-                if len(parts) < 5:
-                    continue
-                chrom, pos, rsid, ref, alt = parts[0], parts[1], parts[2], parts[3], parts[4]
-                if not rsid.startswith("rs"):
-                    continue
-                # Take only first alt for the lookup map
-                first_alt = alt.split(",")[0]
-                if len(ref) != 1 or len(first_alt) != 1:
-                    continue
-                out_fh.write(f"{rsid}\t{chrom}\t{pos}\t{ref}\t{first_alt}\n")
-    tmp.rename(out_path)
-    print(f"  wrote {out_path}", file=sys.stderr)
+    timeout = _timeout_seconds()
+    completed = False
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            with gzip.open(resp, "rb") as in_fh, gzip.open(tmp, "wt") as out_fh:
+                out_fh.write("# rsid\tchrom\tpos\tref\talt\n")
+                for raw in in_fh:
+                    line = raw.decode("utf-8", errors="replace")
+                    if line.startswith("#"):
+                        continue
+                    parts = line.rstrip("\n").split("\t", 7)
+                    if len(parts) < 5:
+                        continue
+                    chrom, pos, rsid, ref, alt = parts[0], parts[1], parts[2], parts[3], parts[4]
+                    if not rsid.startswith("rs"):
+                        continue
+                    # Take only first alt for the lookup map
+                    first_alt = alt.split(",")[0]
+                    if len(ref) != 1 or len(first_alt) != 1:
+                        continue
+                    out_fh.write(f"{rsid}\t{chrom}\t{pos}\t{ref}\t{first_alt}\n")
+        tmp.rename(out_path)
+        completed = True
+        print(f"  wrote {out_path}", file=sys.stderr)
+    finally:
+        if not completed and tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
 
 
 def main(argv: list[str]) -> int:
