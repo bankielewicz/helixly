@@ -254,6 +254,9 @@ def summarize_intervals(path: str, fmt: str) -> dict[str, Any]:
     }
 
 
+_NO_CALL_TOKENS = {"", "-", "--", "0", "00", "0 0"}
+
+
 def summarize_consumer_dna(path: str, kind: str) -> dict[str, Any]:
     chroms: Counter = Counter()
     total = 0
@@ -261,7 +264,7 @@ def summarize_consumer_dna(path: str, kind: str) -> dict[str, Any]:
     for rsid, chrom, pos, genotype in iter_consumer_dna(path):
         total += 1
         chroms[chrom] += 1
-        if "-" in genotype or "0" in genotype or genotype in {"--", "00"}:
+        if genotype.strip() in _NO_CALL_TOKENS:
             no_call += 1
     return {
         "format": f"consumer_dna:{kind}",
