@@ -331,6 +331,26 @@ def warn(msg: str) -> None:
     print(f"warning: {msg}", file=sys.stderr)
 
 
+def phred_offset(min_qchar: int, max_qchar: int) -> tuple[int, str]:
+    """Infer Phred encoding offset from the observed qual-char range.
+
+    Phred+33 uses chars in [33, 74]; Phred+64 uses chars in [59, 104]. The
+    overlap is [59, 74], so deciding on `min_qchar` alone misclassifies a
+    high-quality Phred+33 file (every char >= 59) as Phred+64. Inspect both
+    ends and default the overlap to Phred+33 (modern Illumina), with a
+    stderr note when the range cannot be resolved unambiguously.
+    """
+    if max_qchar > 74:
+        return 64, "Phred+64"
+    if min_qchar < 59:
+        return 33, "Phred+33"
+    warn(
+        f"FASTQ quality char range [{min_qchar}, {max_qchar}] falls in the "
+        "Phred+33/Phred+64 overlap; assuming Phred+33"
+    )
+    return 33, "Phred+33"
+
+
 def die(msg: str, code: int = 2) -> "NoReturn":
     print(f"error: {msg}", file=sys.stderr)
     sys.exit(code)
