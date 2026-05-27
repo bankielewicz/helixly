@@ -18,7 +18,7 @@ exports (23andMe `.txt`, AncestryDNA `.txt`, MyHeritage `.csv`) — and wants
 to:
 
 - ask what a file is or how many records it contains
-- get a numeric summary (read counts, variant breakdown, coverage proxy, GC%)
+- get a numeric summary (read counts, variant breakdown, mean coverage, GC%)
 - pull a region from a FASTA/VCF/BAM/GFF
 - look up genotypes for specific rsIDs in a consumer DNA file
 - convert between supported format pairs
@@ -90,7 +90,7 @@ Output depends on the detected format:
 | FASTA           | sequence count, total length, min/median/mean/max length, N50, GC%, ambiguous base count          |
 | FASTQ           | read count, length distribution, overall + per-base mean quality, Phred encoding (33/64), adapter hit count |
 | VCF             | variant count, SNV/indel/MNP/SV split, Ts/Tv, per-chrom counts, PASS vs filtered, sample list     |
-| BAM/SAM/CRAM    | read count, mapped vs unmapped, duplication rate, contig list, coverage proxy if index present    |
+| BAM/SAM/CRAM    | read count, mapped vs unmapped, duplication rate, contig list, mean coverage if index present     |
 | BED/GFF/GTF     | feature count, feature types, span per chromosome, sources                                        |
 | Consumer DNA    | SNP count, chromosome distribution, build (GRCh37/38), no-call rate                               |
 
