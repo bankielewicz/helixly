@@ -57,6 +57,19 @@ def test_gff_to_bed(fixtures_dir):
     assert p.returncode == 0
     # GFF 1..100 → BED 0..100
     assert "chr1\t0\t100" in p.stdout
+    # GFF3 ID= attribute resolves to the gene/exon name (not the literal "ID=")
+    rows = [r.split("\t") for r in p.stdout.strip().splitlines()]
+    names = [r[3] for r in rows if len(r) >= 4]
+    assert "gene1" in names and "exon1" in names and "exon2" in names
+
+
+def test_gtf_to_bed_name_extraction(fixtures_dir):
+    """Regression for the gene_id parser: previously emitted the literal key."""
+    p = _run([str(SCRIPTS / "convert.py"), str(fixtures_dir / "sample.gtf"), "--to", "bed"])
+    assert p.returncode == 0
+    rows = [r.split("\t") for r in p.stdout.strip().splitlines() if not r.startswith("#")]
+    names = [r[3] for r in rows]
+    assert names == ["g1", "g1", "g2"], f"expected gene values, got {names}"
 
 
 def test_consumer_dna_to_vcf(fixtures_dir):
