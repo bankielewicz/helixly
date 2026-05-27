@@ -1,0 +1,6 @@
+# MyHeritage DNA raw data.
+# Build 37
+RSID,CHROMOSOME,POSITION,RESULT
+"rs1","1","100","AG"
+"rs2","1","200","CT"
+"rs3","2","500","GG"
