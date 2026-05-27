@@ -23,7 +23,7 @@ from typing import Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _common import (  # noqa: E402
     detect_format, detect_consumer_dna_build, die, iter_consumer_dna,
-    open_maybe_gzip, warn,
+    open_maybe_gzip, parse_flat_args, warn,
 )
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
@@ -342,27 +342,22 @@ REFUSAL_MSG = (
 
 
 def main(argv: list[str]) -> int:
-    args = argv[1:]
-    if "--to" not in args or len(args) < 3:
+    path, flags = parse_flat_args(
+        argv[1:], {"--to", "--build", "--rsid-map", "--columns"}
+    )
+    if path is None or "--to" not in flags:
         print(
             "usage: convert.py <input> --to <format> "
             "[--build GRCh37|GRCh38] [--columns c1,c2,...]",
             file=sys.stderr,
         )
         return 2
-    i = args.index("--to")
-    path = args[0]
-    target = args[i + 1].lower()
-    build_override = None
-    if "--build" in args:
-        build_override = args[args.index("--build") + 1]
-    map_override = None
-    if "--rsid-map" in args:
-        map_override = args[args.index("--rsid-map") + 1]
+    target = flags["--to"].lower()
+    build_override = flags.get("--build")
+    map_override = flags.get("--rsid-map")
     columns: list[str] | None = None
-    if "--columns" in args:
-        raw = args[args.index("--columns") + 1]
-        columns = [c.strip() for c in raw.split(",") if c.strip()]
+    if "--columns" in flags:
+        columns = [c.strip() for c in flags["--columns"].split(",") if c.strip()]
         if not columns:
             print("convert: --columns requires a non-empty comma list", file=sys.stderr)
             return 2
