@@ -109,18 +109,25 @@ index and exits.
 ### convert.py — format conversion
 
     python scripts/convert.py <input> --to <target> [--build GRCh37|GRCh38]
+                                                    [--columns c1,c2,...]
 
 Only these conversions are allowed; everything else is refused with a
 clear error:
 
-| from           | to        | notes                                                                |
-|----------------|-----------|----------------------------------------------------------------------|
-| FASTA          | tsv       | columns: id, length, gc, sequence                                    |
-| FASTQ          | fasta     | qualities dropped                                                    |
-| VCF            | tsv / csv | one row per variant; every INFO key gets a column                    |
-| BED            | gff       | feature type set to `region`; block fields dropped (warns)           |
-| GFF / GTF      | bed       | source and feature type dropped (warns)                              |
-| consumer DNA   | vcf       | needs rsID map — run `fetch_assets.py` first; unmapped rsIDs skipped |
+| from           | to        | notes                                                                                |
+|----------------|-----------|--------------------------------------------------------------------------------------|
+| FASTA          | tsv       | columns: id, length, gc, sequence                                                    |
+| FASTQ          | fasta     | qualities dropped                                                                    |
+| VCF            | tsv / csv | one row per variant; INFO keys flattened as columns; FORMAT keys as `<sample>.<key>` |
+| BED            | gff       | feature type set to `region`; block fields dropped (warns)                           |
+| GFF / GTF      | bed       | source and feature type dropped (warns)                                              |
+| consumer DNA   | vcf       | needs rsID map — run `fetch_assets.py` first; unmapped rsIDs skipped                 |
+
+For VCF → tsv/csv, `--columns chrom,pos,DP,S1.GT` restricts and orders
+the output columns. An unknown column name exits non-zero and lists the
+available columns on stderr. Default header order is base columns
+(`chrom,pos,id,ref,alt,qual,filter`) then sorted INFO keys then
+`<sample>.<FORMAT_key>` pairs in `(sample, sorted FORMAT keys)` order.
 
 ### lookup.py — genotypes for specific rsIDs
 
