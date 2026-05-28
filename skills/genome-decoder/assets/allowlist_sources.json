@@ -1,0 +1,51 @@
+{
+  "_comment": "Citation allow-list registry. Faithful encoding of SPEC 'Evidence Sources'. A source NOT in this file cannot back a clinical claim (SPEC) and cannot be fetched (_common.fetch_allowed raises AllowlistError). New allow-listed sources are added HERE, not in code. url_template uses {id} for the raw identifier and {id_numeric} for its digits-only form. 'ext' is the cache-file extension only.",
+  "pubmed": {
+    "identifier_format": "PMID: 17634449",
+    "url_template": "https://pubmed.ncbi.nlm.nih.gov/{id_numeric}/",
+    "url_root": "https://pubmed.ncbi.nlm.nih.gov/",
+    "ext": "html"
+  },
+  "clinvar": {
+    "identifier_format": "ClinVar VCV000017692 or RCV...",
+    "url_template": "https://www.ncbi.nlm.nih.gov/clinvar/variation/{id_numeric}/",
+    "url_root": "https://www.ncbi.nlm.nih.gov/clinvar/",
+    "ext": "html"
+  },
+  "cpic": {
+    "identifier_format": "CPIC {gene} guideline",
+    "url_template": "https://cpicpgx.org/guidelines/",
+    "url_root": "https://cpicpgx.org/guidelines/",
+    "ext": "html"
+  },
+  "pharmgkb": {
+    "identifier_format": "PharmGKB {gene/variant ID}",
+    "url_template": "https://www.pharmgkb.org/",
+    "url_root": "https://www.pharmgkb.org/",
+    "ext": "html"
+  },
+  "fda_pgx_biomarker_table": {
+    "identifier_format": "FDA PGx Biomarker Table",
+    "url_template": "https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling",
+    "url_root": "https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling",
+    "ext": "html"
+  },
+  "gwas_catalog": {
+    "identifier_format": "GWAS Catalog accession GCST...",
+    "url_template": "https://www.ebi.ac.uk/gwas/studies/{id}",
+    "url_root": "https://www.ebi.ac.uk/gwas/",
+    "ext": "html"
+  },
+  "dbsnp": {
+    "identifier_format": "rs1801133",
+    "url_template": "https://www.ncbi.nlm.nih.gov/snp/{id}",
+    "url_root": "https://www.ncbi.nlm.nih.gov/snp/",
+    "ext": "html"
+  },
+  "gnomad": {
+    "identifier_format": "gnomAD v4",
+    "url_template": "https://gnomad.broadinstitute.org/variant/{id}",
+    "url_root": "https://gnomad.broadinstitute.org/",
+    "ext": "html"
+  }
+}
