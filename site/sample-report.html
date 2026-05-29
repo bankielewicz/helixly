@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HelixyAI — Genome Report · Sample Subject</title>
+
+<meta name="provenance:report" content="HelixyAI Genome Report">
+<meta name="provenance:assembly" content="GRCh37">
+<meta name="provenance:source_sha256" content="0000a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e">
+<meta name="provenance:supersedes" content="prior v1 (SHA 1111f0e9d8c7b6a5...)">
+<meta name="provenance:sources" content="CPIC, dbSNP, PubMed, ClinVar">
+<meta name="provenance:access_date" content="2026-01-15">
+<meta name="provenance:subject" content="Sample Subject (synthetic)">
+<meta name="provenance:documents" content="24">
+<meta name="robots" content="noindex">
+<meta name="description" content="HelixyAI genome report index — synthetic demonstration. All values fictional.">
+
+<style>
+:root{
+  --ink:#143049;--ink-2:#1b2733;--muted:#5a6b78;--faint:#8b97a1;
+  --teal:#2f7d6b;--teal-dk:#235e51;--teal-tint:#e3efeb;
+  --clay:#a9572a;--clay-tint:#f3e7dd;--blue:#3a6491;--blue-tint:#e4ecf3;
+  --paper:#f6f5f0;--surface:#ffffff;--surface-2:#fbfaf6;
+  --line:#e4e0d6;--line-2:#d6d1c4;--code-bg:#eeece4;--code-ink:#2a3a31;
+  --shadow:0 1px 2px rgba(20,48,73,.05),0 8px 28px rgba(20,48,73,.06);
+  --serif:Georgia,"Times New Roman",Cambria,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{margin:0;background:var(--paper);color:var(--ink-2);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+a{color:var(--teal-dk);text-underline-offset:2px;}
+a:hover{color:var(--teal);}
+.skip{position:absolute;left:-9999px;top:0;background:#fff;color:var(--ink);padding:10px 16px;z-index:60;border-radius:0 0 6px 0;}
+.skip:focus{left:0;}
+
+.mark{display:block;flex:none;}
+.wordmark{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;line-height:1;}
+.wordmark .ai{color:var(--teal);}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(20,48,73,.97);color:#eaf1f3;border-bottom:1px solid rgba(255,255,255,.08);}
+.topbar-in{max-width:1240px;margin:0 auto;padding:0 28px;height:62px;display:flex;align-items:center;gap:18px;}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.brand .wordmark{color:#fff;font-size:21px;}
+.brand .wordmark .ai{color:#7fd0bf;}
+.brand .mark .s1{stroke:#cfe0e7;}.brand .mark .s2{stroke:#7fd0bf;}.brand .mark .rung{stroke:#5b7c8d;}
+.topbar .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9fb6c2;border-left:1px solid rgba(255,255,255,.16);padding-left:16px;}
+.topbar .spacer{flex:1;}
+.topbar a.tlink{color:#b9cad3;text-decoration:none;font-size:13px;}
+.topbar a.tlink:hover{color:#fff;}
+.btn{font:inherit;font-size:13px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.22);background:transparent;color:#eaf1f3;padding:7px 14px;border-radius:7px;display:inline-flex;align-items:center;gap:7px;text-decoration:none;}
+.btn:hover{background:rgba(255,255,255,.1);}
+.btn svg{width:14px;height:14px;}
+
+/* hero */
+.hero{background:linear-gradient(180deg,#143049 0%,#102739 100%);color:#eaf1f3;position:relative;overflow:hidden;}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(680px 380px at 88% -8%,rgba(127,208,191,.16),transparent 70%);pointer-events:none;}
+.hero-in{max-width:1240px;margin:0 auto;padding:58px 28px 52px;position:relative;z-index:1;display:grid;grid-template-columns:1.5fr 1fr;gap:48px;align-items:center;}
+.hero .eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#7fd0bf;font-weight:700;}
+.hero h1{font-family:var(--serif);font-size:54px;line-height:1.04;color:#fff;margin:14px 0 0;font-weight:700;letter-spacing:-.02em;}
+.hero h1 .lo{color:#9fc7bd;}
+.hero p.lede{font-size:18px;color:#c6d4dc;max-width:48ch;margin:18px 0 0;text-wrap:pretty;}
+.hero .stats{display:flex;gap:34px;margin-top:30px;flex-wrap:wrap;}
+.hero .stat .n{font-family:var(--serif);font-size:34px;color:#fff;font-weight:700;line-height:1;}
+.hero .stat .l{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8fa9b5;margin-top:6px;}
+.hero .helixart{display:flex;justify-content:center;}
+
+/* subject card in hero */
+.subjpanel{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:22px 24px;backdrop-filter:blur(2px);width:100%;max-width:340px;}
+.subjpanel .ph{display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:14px;margin-bottom:14px;}
+.subjpanel .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#2f7d6b,#7fd0bf);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;color:#0e2433;font-size:18px;flex:none;}
+.subjpanel .nm{font-family:var(--serif);font-size:19px;color:#fff;font-weight:700;line-height:1.1;}
+.subjpanel .nm small{display:block;font-family:var(--sans);font-size:11px;font-weight:400;color:#8fa9b5;letter-spacing:.04em;margin-top:3px;text-transform:none;}
+.subjpanel dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;}
+.subjpanel dt{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#7d97a4;}
+.subjpanel dd{margin:2px 0 0;font-family:var(--mono);font-size:12.5px;color:#dceaef;}
+.subjpanel .full{grid-column:1/-1;}
+.subjpanel .full dd{word-break:break-all;color:#7fd0bf;}
+
+/* main wrap */
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px;}
+.section-label{display:flex;align-items:baseline;gap:14px;margin:54px 0 4px;}
+.section-label h2{font-family:var(--serif);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0;}
+.section-label .rule{flex:1;height:1px;background:var(--line);}
+
+/* toolbar */
+.toolbar{display:flex;align-items:center;gap:12px;margin:22px 0 24px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:8px 12px;}
+.search svg{width:16px;height:16px;color:var(--faint);flex:none;}
+.search input{border:none;background:transparent;font:inherit;font-size:14px;color:var(--ink-2);width:100%;outline:none;}
+.search input::placeholder{color:var(--faint);}
+.fbtns{display:flex;gap:7px;flex-wrap:wrap;}
+.chip{font:inherit;font-size:12.5px;cursor:pointer;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);padding:6px 14px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.chip .n{font-family:var(--mono);font-size:10.5px;opacity:.7;}
+
+/* group heading within list */
+.grp{margin-top:34px;}
+.grp .gh{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-dk);font-weight:700;margin-bottom:14px;}
+.grp .gh .gn{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:0;background:var(--code-bg);padding:2px 8px;border-radius:20px;}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 19px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:border-color .15s,transform .15s;position:relative;}
+.card:hover{border-color:var(--teal);transform:translateY(-2px);}
+.card .top{display:flex;align-items:flex-start;gap:11px;}
+.card .ic{width:34px;height:34px;border-radius:9px;background:var(--teal-tint);color:var(--teal-dk);display:flex;align-items:center;justify-content:center;flex:none;}
+.card .ic svg{width:18px;height:18px;}
+.card.t1 .ic{background:var(--clay-tint);color:var(--clay);}
+.card .num{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint);}
+.card h3{font-family:var(--serif);font-size:18px;color:var(--ink);font-weight:700;margin:13px 0 0;line-height:1.2;}
+.card p{font-size:13px;color:var(--muted);margin:7px 0 0;line-height:1.5;text-wrap:pretty;flex:1;}
+.card .foot{display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.pill{font-size:10.5px;font-weight:700;letter-spacing:.03em;padding:3px 9px;border-radius:20px;}
+.pill.t1{background:var(--clay-tint);color:var(--clay);}
+.pill.t2{background:var(--blue-tint);color:var(--blue);}
+.pill.t3{background:#ededea;color:#62655f;}
+.pill.findings{background:var(--surface-2);border:1px solid var(--line);color:var(--muted);font-family:var(--mono);font-weight:400;}
+.card .arrow{margin-left:auto;color:var(--faint);font-size:15px;}
+.card:hover .arrow{color:var(--teal);}
+.card.ready::after{content:"";position:absolute;top:14px;right:14px;width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 3px var(--teal-tint);}
+
+.empty{display:none;text-align:center;color:var(--faint);padding:50px 0;font-size:14px;}
+
+/* highlights strip */
+.highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px;}
+.hl{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 19px;box-shadow:var(--shadow);}
+.hl .k{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+.hl .v{font-family:var(--serif);font-size:28px;color:var(--ink);font-weight:700;margin-top:8px;line-height:1;}
+.hl .d{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.45;}
+.hl.accent{border-left:4px solid var(--clay);}
+
+/* provenance overview */
+.provbar{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);margin-top:24px;overflow:hidden;}
+.provbar .ph{display:flex;align-items:center;gap:10px;padding:14px 22px;border-bottom:1px solid var(--line);background:var(--surface-2);}
+.provbar .ph svg{width:16px;height:16px;color:var(--teal-dk);}
+.provbar .ph .t{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink);}
+.provbar .ph .v{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--teal-dk);background:var(--teal-tint);padding:3px 10px;border-radius:20px;}
+.provbar dl{margin:0;padding:8px 22px 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:0 32px;}
+.provbar .row{padding:12px 0;border-bottom:1px dashed var(--line);}
+.provbar dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;}
+.provbar dd{margin:5px 0 0;font-family:var(--mono);font-size:12.5px;color:var(--ink-2);word-break:break-all;}
+.provbar dd.sha{color:var(--teal-dk);}
+
+/* disclaimer */
+.disclaimer{display:flex;gap:14px;align-items:flex-start;background:var(--clay-tint);border:1px solid #e6d2c2;border-radius:14px;padding:18px 22px;margin-top:30px;}
+.disclaimer .ic{width:22px;height:22px;color:var(--clay);flex:none;margin-top:2px;}
+.disclaimer .tx{font-size:13.5px;color:#6e4226;line-height:1.55;}
+.disclaimer .tx b{color:var(--clay);}
+
+/* footer */
+footer.site{background:var(--ink);color:#c6d4dc;margin-top:60px;}
+footer.site .fin{max-width:1240px;margin:0 auto;padding:38px 28px;display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;}
+footer.site .fbrand{display:flex;align-items:center;gap:11px;}
+footer.site .wordmark{color:#fff;font-size:19px;}footer.site .wordmark .ai{color:#7fd0bf;}
+footer.site .mark .s1{stroke:#cfe0e7;}footer.site .mark .s2{stroke:#7fd0bf;}footer.site .mark .rung{stroke:#5b7c8d;}
+footer.site .col{font-size:12.5px;line-height:1.8;}
+footer.site .col a{color:#9fc7bd;text-decoration:none;}footer.site .col a:hover{color:#fff;}
+footer.site .ch{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7d97a4;margin-bottom:7px;font-weight:700;}
+footer.site .legal{flex:1;min-width:240px;font-size:11.5px;color:#90a8b3;line-height:1.6;}
+footer.site .url{font-family:var(--mono);color:#7fd0bf;}
+footer.site .bottom{border-top:1px solid rgba(255,255,255,.1);}
+footer.site .bottom .b{max-width:1240px;margin:0 auto;padding:14px 28px;font-size:11.5px;color:#7d97a4;display:flex;gap:16px;flex-wrap:wrap;}
+
+@media(max-width:980px){
+  .hero-in{grid-template-columns:1fr;gap:30px;}
+  .hero .helixart{order:-1;justify-content:flex-start;}
+  .grid{grid-template-columns:repeat(2,1fr);}
+  .highlights{grid-template-columns:repeat(2,1fr);}
+  .provbar dl{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:620px){
+  .hero h1{font-size:38px;}
+  .grid,.highlights{grid-template-columns:1fr;}
+}
+@media print{
+  .topbar,.toolbar,.btn,.hero .helixart{display:none !important;}
+  body{background:#fff;}
+  .hero{background:#fff;color:#000;}
+  .hero h1,.subjpanel .nm{color:#000;}
+  .card,.hl,.provbar,.disclaimer{box-shadow:none;break-inside:avoid;}
+  .grid{grid-template-columns:repeat(2,1fr);}
+  @page{margin:14mm;}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#contents">Skip to report contents</a>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="sample-report.html" aria-label="HelixyAI home">
+      <svg class="mark" width="26" height="34" viewBox="0 0 26 40" fill="none" aria-hidden="true">
+        <path class="s1" d="M7 3 C20 9 20 14 13 20 C6 26 6 31 19 37" stroke-width="2.1" stroke-linecap="round"/>
+        <path class="s2" d="M19 3 C6 9 6 14 13 20 C20 26 20 31 7 37" stroke-width="2.1" stroke-linecap="round"/>
+        <line class="rung" x1="9.5" y1="6.5" x2="16.5" y2="6.5"/><line class="rung" x1="8" y1="12" x2="18" y2="12"/>
+        <line class="rung" x1="8" y1="28" x2="18" y2="28"/><line class="rung" x1="9.5" y1="33.5" x2="16.5" y2="33.5"/>
+      </svg>
+      <span class="wordmark">Helixy<span class="ai">AI</span></span>
+    </a>
+    <span class="tag">Genome Report</span>
+    <span class="spacer"></span>
+    <a class="tlink" href="#contents">Contents</a>
+    <a class="btn" href="Pharmacogenomics Analysis.html">Open sample document
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-in">
+    <div>
+      <div class="eyebrow">Personal Genome Report · Synthetic Demonstration</div>
+      <h1>Your genome,<br><span class="lo">made legible.</span></h1>
+      <p class="lede">HelixyAI turns a consumer DNA export into a navigable, evidence-graded report — provenance you can verify, findings you can act on with your clinician.</p>
+      <div class="stats">
+        <div class="stat"><div class="n">24</div><div class="l">Documents</div></div>
+        <div class="stat"><div class="n">312</div><div class="l">Variants reviewed</div></div>
+        <div class="stat"><div class="n">9</div><div class="l">Tier 1 findings</div></div>
+        <div class="stat"><div class="n">GRCh37</div><div class="l">Assembly</div></div>
+      </div>
+    </div>
+    <div class="helixart">
+      <div class="subjpanel">
+        <div class="ph">
+          <div class="av">S</div>
+          <div class="nm">Sample Subject<small>Report HX-2026-0042 · synthetic</small></div>
+        </div>
+        <dl>
+          <div><dt>Assembly</dt><dd>GRCh37</dd></div>
+          <div><dt>Array</dt><dd>SNP v5</dd></div>
+          <div><dt>Access date</dt><dd>2026-01-15</dd></div>
+          <div><dt>Sources</dt><dd>CPIC · dbSNP</dd></div>
+          <div class="full"><dt>Source SHA-256</dt><dd>0000a1b2c3d4e5f6…4b5c6d7e</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<main id="contents">
+<div class="wrap">
+
+  <!-- provenance overview -->
+  <div class="section-label"><h2>Report Provenance</h2><span class="rule"></span></div>
+  <div class="provbar">
+    <div class="ph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="t">Verified Data Chain</span>
+      <span class="v">single source · GRCh37</span>
+    </div>
+    <dl>
+      <div class="row"><dt>Source assembly</dt><dd>GRCh37 (hg19)</dd></div>
+      <div class="row"><dt>Source file SHA-256</dt><dd class="sha">0000a1b2…4b5c6d7e</dd></div>
+      <div class="row"><dt>Supersedes</dt><dd>v1 · SHA <span class="sha">1111f0e9…</span></dd></div>
+      <div class="row"><dt>Access date</dt><dd>2026-01-15</dd></div>
+      <div class="row"><dt>Evidence sources</dt><dd>CPIC, dbSNP, PubMed, ClinVar</dd></div>
+      <div class="row"><dt>Documents</dt><dd>24 · this report</dd></div>
+      <div class="row"><dt>Build</dt><dd>renderer v2.3.0</dd></div>
+      <div class="row"><dt>Status</dt><dd style="color:var(--teal-dk)">complete</dd></div>
+    </dl>
+  </div>
+
+  <!-- highlights -->
+  <div class="section-label"><h2>At a Glance</h2><span class="rule"></span></div>
+  <div class="highlights">
+    <div class="hl accent"><div class="k">Tier 1 findings</div><div class="v">9</div><div class="d">Strongest evidence — review with a clinician.</div></div>
+    <div class="hl"><div class="k">CPIC Level A</div><div class="v">4</div><div class="d">Highest-grade pharmacogenomic guidance.</div></div>
+    <div class="hl"><div class="k">Carrier flags</div><div class="v">2</div><div class="d">Recessive variants relevant to family planning.</div></div>
+    <div class="hl"><div class="k">Variants reviewed</div><div class="v">312</div><div class="d">Across 24 analysis documents.</div></div>
+  </div>
+
+  <!-- contents -->
+  <div class="section-label"><h2>Report Contents</h2><span class="rule"></span></div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input id="q" type="text" placeholder="Search documents — gene, drug, trait…" aria-label="Search documents">
+    </div>
+    <div class="fbtns" role="group" aria-label="Filter by tier">
+      <button class="chip on" data-f="all" type="button">All <span class="n">24</span></button>
+      <button class="chip" data-f="t1" type="button">Tier 1 <span class="n">9</span></button>
+      <button class="chip" data-f="ready" type="button">Available <span class="n">4</span></button>
+    </div>
+  </div>
+
+  <div id="list">
+    <!-- groups populated by template markup below -->
+    <div class="grp" data-group="Overview">
+      <div class="gh">Overview <span class="gn">3 docs</span></div>
+      <div class="grid">
+        <a class="card ready t1" href="Executive Summary.html" data-tier="t1" data-ready="1" data-name="executive summary key findings overview">
+          <div class="top"><span class="ic">${ICON_SUMMARY}</span><span class="num">01</span></div>
+          <h3>Executive Summary</h3><p>The full picture in one page — top findings, what to do next, what to ignore.</p>
+          <div class="foot"><span class="pill t1">2 Tier 1</span><span class="pill findings">12 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="methodology provenance pipeline assembly sha">
+          <div class="top"><span class="ic">${ICON_SHIELD}</span><span class="num">02</span></div>
+          <h3>Methodology &amp; Provenance</h3><p>How the report is built: assembly, hashing, evidence grading, and supersession.</p>
+          <div class="foot"><span class="pill findings">pipeline</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="glossary terms definitions rsid genotype tier">
+          <div class="top"><span class="ic">${ICON_BOOK}</span><span class="num">03</span></div>
+          <h3>Glossary</h3><p>Plain-language definitions for rsIDs, genotypes, tiers, and evidence levels.</p>
+          <div class="foot"><span class="pill findings">reference</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grp" data-group="Pharmacology">
+      <div class="gh">Pharmacology <span class="gn">3 docs</span></div>
+      <div class="grid">
+        <a class="card ready t1" href="Pharmacogenomics Analysis.html" data-tier="t1" data-ready="1" data-name="pharmacogenomics drug metabolism cpic genotype prescribing">
+          <div class="top"><span class="ic">${ICON_PILL}</span><span class="num">04</span></div>
+          <h3>Pharmacogenomics</h3><p>Genotype-guided medication response with provider-ready, CPIC-graded recommendations.</p>
+          <div class="foot"><span class="pill t1">2 Tier 1</span><span class="pill findings">5 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="cyp450 drug metabolism cytochrome enzyme">
+          <div class="top"><span class="ic">${ICON_PILL}</span><span class="num">05</span></div>
+          <h3>Drug Metabolism (CYP450)</h3><p>Cytochrome P450 metabolizer status across major enzyme families.</p>
+          <div class="foot"><span class="pill t1">3 Tier 1</span><span class="pill findings">7 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="caffeine metabolism cyp1a2 stimulant">
+          <div class="top"><span class="ic">${ICON_DROP}</span><span class="num">06</span></div>
+          <h3>Caffeine Metabolism</h3><p>Predicted fast vs. slow caffeine clearance and sensitivity.</p>
+          <div class="foot"><span class="pill t2">1 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grp" data-group="Methylation">
+      <div class="gh">Methylation &amp; Metabolism <span class="gn">4 docs</span></div>
+      <div class="grid">
+        <a class="card ready t1" href="MTHFR Methylation.html" data-tier="t1" data-ready="1" data-name="mthfr methylation folate homocysteine">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">07</span></div>
+          <h3>MTHFR / Methylation</h3><p>Methylation-cycle variants and downstream folate processing.</p>
+          <div class="foot"><span class="pill t1">1 Tier 1</span><span class="pill findings">3 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="folate b12 vitamin cobalamin">
+          <div class="top"><span class="ic">${ICON_LEAF}</span><span class="num">08</span></div>
+          <h3>Folate &amp; B12</h3><p>Genotype context for folate and B12 utilization.</p>
+          <div class="foot"><span class="pill t2">2 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="lipid metabolism cholesterol ldl apoe">
+          <div class="top"><span class="ic">${ICON_HEART}</span><span class="num">09</span></div>
+          <h3>Lipid Metabolism</h3><p>Variants associated with lipid handling and cardiometabolic context.</p>
+          <div class="foot"><span class="pill t2">2 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="alcohol flush aldh2 acetaldehyde">
+          <div class="top"><span class="ic">${ICON_DROP}</span><span class="num">10</span></div>
+          <h3>Alcohol Flush (ALDH2)</h3><p>Acetaldehyde clearance and the alcohol-flush response.</p>
+          <div class="foot"><span class="pill t1">1 Tier 1</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grp" data-group="Nutrition">
+      <div class="gh">Nutrition <span class="gn">4 docs</span></div>
+      <div class="grid">
+        <a class="card" href="sample-report.html" data-tier="" data-name="lactose tolerance lct dairy">
+          <div class="top"><span class="ic">${ICON_LEAF}</span><span class="num">11</span></div>
+          <h3>Lactose Tolerance</h3><p>Predicted lactase persistence into adulthood.</p>
+          <div class="foot"><span class="pill t3">Tier 3</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="vitamin d receptor gc binding">
+          <div class="top"><span class="ic">${ICON_SUN}</span><span class="num">12</span></div>
+          <h3>Vitamin D</h3><p>Variants affecting vitamin D binding and predicted baseline levels.</p>
+          <div class="foot"><span class="pill t1">1 Tier 1</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="iron hfe hemochromatosis ferritin">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">13</span></div>
+          <h3>Iron / HFE</h3><p>Hereditary hemochromatosis risk variants and iron overload context.</p>
+          <div class="foot"><span class="pill t1">2 Tier 1</span><span class="pill findings">2 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="vitamin b complex riboflavin">
+          <div class="top"><span class="ic">${ICON_LEAF}</span><span class="num">14</span></div>
+          <h3>B-Complex Vitamins</h3><p>Genotype context across the B-vitamin group.</p>
+          <div class="foot"><span class="pill t3">Tier 3</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grp" data-group="Immunity">
+      <div class="gh">Immunity &amp; Allergy <span class="gn">3 docs</span></div>
+      <div class="grid">
+        <a class="card ready" href="Allergy Histamine.html" data-tier="" data-ready="1" data-name="allergy histamine dao intolerance">
+          <div class="top"><span class="ic">${ICON_SHIELD}</span><span class="num">15</span></div>
+          <h3>Allergy &amp; Histamine</h3><p>Histamine-degradation capacity and allergy-related markers.</p>
+          <div class="foot"><span class="pill t2">2 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="celiac hla dq gluten autoimmune">
+          <div class="top"><span class="ic">${ICON_SHIELD}</span><span class="num">16</span></div>
+          <h3>Celiac (HLA-DQ)</h3><p>HLA haplotype risk associated with celiac disease.</p>
+          <div class="foot"><span class="pill t1">1 Tier 1</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="autoimmune markers inflammation">
+          <div class="top"><span class="ic">${ICON_SHIELD}</span><span class="num">17</span></div>
+          <h3>Autoimmune Markers</h3><p>Selected variants associated with autoimmune predisposition.</p>
+          <div class="foot"><span class="pill t2">1 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+
+    <div class="grp" data-group="Traits">
+      <div class="gh">Traits &amp; Carrier Status <span class="gn">7 docs</span></div>
+      <div class="grid">
+        <a class="card" href="sample-report.html" data-tier="" data-name="sleep chronotype circadian clock">
+          <div class="top"><span class="ic">${ICON_MOON}</span><span class="num">18</span></div>
+          <h3>Sleep &amp; Chronotype</h3><p>Morningness / eveningness and circadian-rhythm variants.</p>
+          <div class="foot"><span class="pill t3">Tier 3</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="sensory taste bitter cilantro">
+          <div class="top"><span class="ic">${ICON_DROP}</span><span class="num">19</span></div>
+          <h3>Sensory &amp; Taste</h3><p>Bitter perception, cilantro aversion, and related taste traits.</p>
+          <div class="foot"><span class="pill t3">Tier 3</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="carrier status recessive family planning">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">20</span></div>
+          <h3>Carrier Status</h3><p>Recessive-condition carrier flags relevant to family planning.</p>
+          <div class="foot"><span class="pill t1">2 Tier 1</span><span class="pill findings">4 findings</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="muscle composition fitness actn3">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">21</span></div>
+          <h3>Muscle &amp; Fitness</h3><p>Power vs. endurance composition and recovery context.</p>
+          <div class="foot"><span class="pill t3">Tier 3</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card t1" href="sample-report.html" data-tier="t1" data-name="cardiometabolic risk blood pressure">
+          <div class="top"><span class="ic">${ICON_HEART}</span><span class="num">22</span></div>
+          <h3>Cardiometabolic</h3><p>Selected variants in the cardiometabolic risk landscape.</p>
+          <div class="foot"><span class="pill t1">1 Tier 1</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="bone density osteoporosis">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">23</span></div>
+          <h3>Bone Density</h3><p>Variants associated with bone-mineral-density baselines.</p>
+          <div class="foot"><span class="pill t2">1 Tier 2</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="sample-report.html" data-tier="" data-name="ancestry composition haplogroup">
+          <div class="top"><span class="ic">${ICON_NODE}</span><span class="num">24</span></div>
+          <h3>Ancestry Context</h3><p>Haplogroup context used to calibrate variant frequencies.</p>
+          <div class="foot"><span class="pill findings">context</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="empty" id="empty">No documents match your search.</div>
+
+  <!-- disclaimer -->
+  <div class="disclaimer" role="note">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+    <div class="tx"><b>Consult your prescribing clinician.</b> This HelixyAI report is a synthetic demonstration generated from a consumer DNA export. Every name, identifier, rsID, genotype, and citation shown is fictional. It is not a diagnosis or medical advice — do not start, stop, or change any medication or treatment based on this report.</div>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="fin">
+    <div style="min-width:200px">
+      <div class="fbrand">
+        <svg class="mark" width="24" height="31" viewBox="0 0 26 40" fill="none" aria-hidden="true">
+          <path class="s1" d="M7 3 C20 9 20 14 13 20 C6 26 6 31 19 37" stroke-width="2.1" stroke-linecap="round"/>
+          <path class="s2" d="M19 3 C6 9 6 14 13 20 C20 26 20 31 7 37" stroke-width="2.1" stroke-linecap="round"/>
+          <line class="rung" x1="9.5" y1="6.5" x2="16.5" y2="6.5"/><line class="rung" x1="8" y1="12" x2="18" y2="12"/>
+          <line class="rung" x1="8" y1="28" x2="18" y2="28"/><line class="rung" x1="9.5" y1="33.5" x2="16.5" y2="33.5"/>
+        </svg>
+        <span class="wordmark">Helixy<span class="ai">AI</span></span>
+      </div>
+      <div style="font-size:12px;color:#90a8b3;margin-top:10px;">Your genome, made legible.<br><span class="url">helixyai.com</span></div>
+    </div>
+    <div class="col"><div class="ch">Report</div><a href="#contents">Contents</a><br><a href="Pharmacogenomics Analysis.html">Pharmacogenomics</a><br><a href="sample-report.html">Executive Summary</a><br><a href="sample-report.html">Methodology</a></div>
+    <div class="col"><div class="ch">Sources</div><a href="https://cpicpgx.org/" rel="external">CPIC</a><br><a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external">dbSNP</a><br><a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external">PubMed</a><br><a href="https://www.ncbi.nlm.nih.gov/clinvar/" rel="external">ClinVar</a></div>
+    <div class="legal"><div class="ch">Disclaimer</div>HelixyAI reports are informational and, in this demonstration, entirely synthetic. All identifiers, rsIDs, genotypes, and citations are fictional. Not medical advice — always consult your prescribing clinician.</div>
+  </div>
+  <div class="bottom"><div class="b">
+    <span>© 2026 HelixyAI · <span class="url" style="color:#7fd0bf">helixyai.com</span></span>
+    <span>Assembly GRCh37</span><span>Generated 2026-01-15</span><span>Source SHA 0000a1b2…4b5c6d7e</span>
+  </div></div>
+</footer>
+
+<script>
+(function(){
+  /* Inject inline icons (defined once, referenced via ${TOKEN} placeholders in markup) */
+  var ICONS={
+    SUMMARY:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16M4 10h16M4 15h10M4 20h7"/></svg>',
+    SHIELD:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg>',
+    BOOK:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM19 3v16"/></svg>',
+    PILL:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M12 8v8"/></svg>',
+    DROP:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',
+    NODE:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8 7l8 0M8 8l8 8"/></svg>',
+    LEAF:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 4S8 4 6 12a6 6 0 0 0 6 6c8-2 8-14 8-14zM6 18C10 14 14 12 18 10"/></svg>',
+    HEART:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></svg>',
+    SUN:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg>',
+    MOON:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14a8 8 0 0 1-10-10 8 8 0 1 0 10 10z"/></svg>'
+  };
+  document.querySelectorAll('.card .ic').forEach(function(el){
+    var m=el.textContent.match(/\$\{ICON_(\w+)\}/);
+    if(m&&ICONS[m[1]]){el.innerHTML=ICONS[m[1]];}
+  });
+
+  /* Search + tier filter */
+  var q=document.getElementById('q'),chips=document.querySelectorAll('.chip[data-f]');
+  var cards=document.querySelectorAll('.card'),groups=document.querySelectorAll('.grp'),empty=document.getElementById('empty');
+  var filter='all';
+  function apply(){
+    var term=(q.value||'').trim().toLowerCase();var any=false;
+    cards.forEach(function(c){
+      var okF = filter==='all' || (filter==='t1'&&c.getAttribute('data-tier')==='t1') || (filter==='ready'&&c.getAttribute('data-ready')==='1');
+      var okT = !term || (c.getAttribute('data-name')||'').indexOf(term)>-1 || (c.querySelector('h3').textContent.toLowerCase().indexOf(term)>-1);
+      var show=okF&&okT;c.style.display=show?'':'none';if(show)any=true;
+    });
+    groups.forEach(function(g){
+      var vis=g.querySelectorAll('.card');var shown=0;
+      vis.forEach(function(c){if(c.style.display!=='none')shown++;});
+      g.style.display=shown?'':'none';
+    });
+    empty.style.display=any?'none':'block';
+  }
+  q.addEventListener('input',apply);
+  chips.forEach(function(ch){ch.addEventListener('click',function(){chips.forEach(function(x){x.classList.remove('on');});ch.classList.add('on');filter=ch.getAttribute('data-f');apply();});});
+})();
+</script>
+</body>
+</html>
