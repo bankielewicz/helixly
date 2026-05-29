@@ -59,3 +59,52 @@ Re-running on the same snapshot date is offline and byte-identical — this is t
 determinism contract of SPEC line 370. The cache directory *is* the access-date
 ledger; the renderer reads each citation's access date back off the filename.
 This directory is run-output, not a bundled asset, and is `.gitignore`d.
+
+## templates/index.html — HelixyAI report index template
+
+The canonical HTML template for the **report index / landing hub** of the
+interlinked output (SPEC "Output Format"; the report is a set of ~24 documents
+plus this index). It is the design source of truth for the output's look — the
+renderer generates the live index against this template's structure and styling;
+it is not served as-is.
+
+Provenance: produced by Claude Design (claude.ai/design) for the **HelixyAI**
+brand (helixyai.com), exported as a handoff bundle, placed here verbatim. It is
+**self-contained** — all CSS inline, web-safe fonts, inline SVG logo, vanilla JS,
+no network/CDN, with a print stylesheet — and uses **synthetic data only**
+("Sample Subject", invented rsIDs/SHAs). It honors the SPEC HTML contract:
+`<meta name="provenance:*">` in `<head>`, genomic data as
+`<code data-rsid data-chrom data-pos data-genotype>`, citations as
+`<a rel="external" data-access-date>`, semantic `<table>`.
+
+Design system (apply across all rendered docs): palette navy `#143049` ·
+scientific teal `#2f7d6b` · warm clay `#a9572a` (Tier 1 / alerts) on warm paper
+`#f6f5f0`; Georgia headlines · system-sans body · monospace for all genomic data;
+persistent grouped sidebar + breadcrumb + prev/next pager; tier badges (1/2/3).
+
+## templates/document.html — HelixyAI subpage (per-document) template
+
+The canonical HTML template for the **per-document subpages** — the data-breakdown
+pages the index links to. `index.html` (primary) and `document.html` (subpage) are
+a **pair**: the index is the landing/navigation hub; the document template is every
+analysis page beneath it. Same self-contained, synthetic-data-only, SPEC-contract
+properties and the same HelixyAI design system / shared chrome (top bar, grouped
+sidebar, footer, scripts) as the index — so the set renders as one cohesive report.
+
+Source: the representative `Pharmacogenomics Analysis.html` from the design bundle,
+which the design chat notes "defines the whole system." It exercises every
+per-document component the renderer must support:
+
+- **Provenance card** (assembly, source SHA-256, supersedes, evidence sources, access date)
+- **Provider-ready alert table** (Drug · Gene/Genotype · Evidence level · recommendation · source link; prints on one page)
+- **Per-finding blocks** with `rsID · chr:pos · genotype` code-chip triples + Tier 1/2/3 badges + citation links
+- **Semantic genotype table** (with working tier filters)
+- **De-emphasized historical-context blockquotes**
+- **Standing "consult your prescribing clinician" disclaimer**
+- **Breadcrumb + prev/next pager** tying it into the report
+
+The renderer (Workstream D2) generates each live document against this template's
+structure/styling; it is not served as-is. The bundle's other built docs
+(`Executive Summary.html`, `MTHFR Methylation.html`, `Allergy Histamine.html`)
+are programmatic reuses of this same system and are kept under `tmp/design-bundle/`
+for reference, not as separate templates.
