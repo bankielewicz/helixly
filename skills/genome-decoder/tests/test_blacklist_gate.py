@@ -1,10 +1,12 @@
 """Regression tests for the aspirational-phrase blacklist gate (SPEC Rule 1).
 
-Audit finding 1 (2026-05-28): the archive-attributed-quote exemption only
-exempted the single line carrying the ``[verbatim from archive]`` marker, so the
-continuation lines of a multi-line attributed blockquote — the pattern the subject's
-Phase 5/7 reference docs relied on — were flagged and the write gate refused to
-write the document. These tests pin the corrected behaviour.
+Audit finding 1: the archive-attributed-quote exemption only exempted the single
+line carrying the ``[verbatim from archive]`` marker, so the continuation lines of
+a multi-line attributed blockquote — the pattern a prior-analysis archive's
+medical-notes/checkpoint rebuilds rely on — were flagged and the write gate
+refused to write the document. These tests pin the corrected behaviour.
+
+All fixtures use synthetic placeholder data only.
 """
 
 import _common
@@ -32,7 +34,7 @@ def test_marker_not_required_on_first_blockquote_line():
 
 
 def test_single_line_removed_claim_bullet_is_exempt():
-    """The Provenance Summary 'Removed claims' bullet quotes v1 text inline."""
+    """The Provenance Summary 'Removed claims' bullet quotes archive text inline."""
     text = (
         "**Removed claims** (verbatim quote → reason removed):\n"
         '- "may benefit from supplement X" [verbatim from archive: 05_Sample_Nutrition.md] '
@@ -86,7 +88,7 @@ def test_write_doc_writes_a_doc_with_a_multiline_archive_quote(tmp_path):
     prov = ProvenanceBlock(
         doc_id="04_Sample_Notes",
         produced_by="claude-opus-4-8[1m]",
-        produced_on=date(2026, 5, 28),
+        produced_on=date(2026, 1, 15),
         phase=5,
         source_genome_path="/data/sample_genome.txt",
         source_genome_sha256="0000000000000000",
@@ -97,9 +99,9 @@ def test_write_doc_writes_a_doc_with_a_multiline_archive_quote(tmp_path):
         removed_claims_count=0,
         added_claims_count=0,
         external_sources_used=("dbSNP",),
-        external_sources_access_date=date(2026, 5, 28),
+        external_sources_access_date=date(2026, 1, 15),
         supersedes="/data/sample/archive/v1/04_Sample_Notes.md",
-        supersedes_sha256="deadbeef",
+        supersedes_sha256="2222222222222222",
     )
     body = (
         "> [verbatim from archive: 04_Sample_Notes.md lines 124-129]\n"
@@ -108,7 +110,7 @@ def test_write_doc_writes_a_doc_with_a_multiline_archive_quote(tmp_path):
     doc = Document(
         path=tmp_path / "04_Sample_Notes.md",
         provenance=prov,
-        title="Medical Notes",
+        title="Sample Notes",
         sections=(Section(heading="Sample Condition Monitoring Protocol", body_md=body),),
     )
     written = render.write_doc(doc, archive_dir=tmp_path / "archive", also_html=True)
