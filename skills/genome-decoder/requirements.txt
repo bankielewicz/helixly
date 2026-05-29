@@ -1,0 +1,12 @@
+# genome-decoder runtime dependencies (pinned, mirroring genome-reader's style).
+#
+# Deliberately lean. The Provenance Block YAML and the HTML report are emitted
+# by hand (deterministic, no templating engine), and the Phase 6 VCF from
+# `genome-reader convert.py` is parsed as plain text — so jinja2 and cyvcf2 from
+# the original design sketch are NOT hard dependencies here. genome parsing is
+# delegated to genome-reader's own venv.
+pyyaml>=6.0          # read master-plan frontmatter
+requests>=2.31       # allow-listed network fetches (via _common.fetch_allowed only)
+beautifulsoup4>=4.12 # parse fetched ClinVar / CPIC / PubMed HTML
+pytest>=8.0          # test suite
+pytest-mock>=3.12    # test suite

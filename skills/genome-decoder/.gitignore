@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Run-time allow-list cache lives under each run's output dir, never in-repo,
+# but ignore it anywhere it appears under the skill.
+.allowlist_cache/
