@@ -817,3 +817,216 @@ def extract_rsids(text: str) -> list[str]:
 def iter_archive_docs(archive_dir: str | os.PathLike) -> Iterable[Path]:
     """Every ``*.md`` under the archive, sorted for deterministic ordering."""
     return sorted(Path(archive_dir).rglob("*.md"))
+
+
+# --------------------------------------------------------------------------- #
+# Structured report model  (Workstream D2/D3 — feeds the HelixyAI renderer)
+# --------------------------------------------------------------------------- #
+#
+# These types carry the structured content the HelixyAI templates render
+# (provider-alert table, tier-coded finding blocks, genotype table, the index
+# doc grid). They are SEPARATE from the markdown-centric ``Document`` above so
+# the foundation's legacy render path stays untouched. The renderer
+# (``render.py``) maps these to the exact design markup; the rebuild agent
+# (Workstream C) populates them later — still gated by ``render.write_*``
+# (archive guard + Provenance Summary + blacklist).
+
+Tier = Literal[1, 2, 3]
+
+
+def tier_class(tier: int) -> str:
+    """Map a tier (1/2/3) to the design's ``t1|t2|t3`` class suffix."""
+    if tier not in (1, 2, 3):
+        raise DecoderError(f"tier must be 1, 2 or 3; got {tier!r}")
+    return f"t{tier}"
+
+
+def evidence_class(level: str) -> str:
+    """Map an evidence level to the design's ``.ev`` modifier (a|b|c)."""
+    key = level.strip().upper()
+    if key.startswith("A") or "LEVEL A" in key:
+        return "a"
+    if key.startswith("B") or "LEVEL B" in key:
+        return "b"
+    return "c"  # Level C / Limited / anything else → muted
+
+
+@dataclass(frozen=True)
+class Triple:
+    """An rsID + chr:pos + genotype datum → three ``<code class="dna …" data-*>`` chips."""
+
+    rsid: str
+    chrom: str
+    pos: str
+    genotype: str
+
+    def __post_init__(self) -> None:
+        if not self.rsid:
+            raise DecoderError("Triple requires an rsid (SPEC Rule 1a — INDEX traceability)")
+
+    @property
+    def pos_label(self) -> str:
+        """``chr:pos`` with a thousands-separated position when numeric."""
+        p = str(self.pos)
+        return f"{self.chrom}:{int(p):,}" if p.isdigit() else f"{self.chrom}:{p}"
+
+
+@dataclass(frozen=True)
+class Citation:
+    """An allow-list citation → ``<a href rel="external" data-access-date>``.
+
+    ``source_key`` MUST be a key in ``allowlist_sources.json`` (SPEC Evidence
+    Sources, Rule 1b); validated at construction so an off-list citation cannot
+    exist. ``url`` must resolve under that source's ``url_root``.
+    """
+
+    source_key: str
+    label: str
+    url: str
+    access_date: str  # YYYY-MM-DD
+
+    def __post_init__(self) -> None:
+        allow = load_allowlist()
+        if self.source_key not in allow:
+            raise AllowlistError(
+                f"citation source {self.source_key!r} not in allow-list "
+                f"({', '.join(sorted(k for k in allow if not k.startswith('_')))})"
+            )
+        root = allow[self.source_key].get("url_root", "")
+        if root and not self.url.startswith(root):
+            raise AllowlistError(
+                f"citation url {self.url!r} is not under the {self.source_key!r} "
+                f"root {root!r}"
+            )
+
+
+@dataclass(frozen=True)
+class Finding:
+    """A tier-coded per-gene finding (one ``.finding`` block).
+
+    A clinical finding MUST carry at least one ``Triple`` (rsid → INDEX, Rule 1a)
+    and at least one ``Citation`` (allow-list, Rule 1b). ``historical_note`` is
+    rendered in a de-emphasized ``blockquote.hist`` and is emitted WITH the
+    ``[verbatim from archive…]`` attribution so the blacklist gate exempts it.
+    """
+
+    gene: str
+    name: str
+    tier: int
+    evidence: str  # display label e.g. "CPIC Level A" / "Limited"
+    triples: tuple[Triple, ...]
+    implication: str
+    citations: tuple[Citation, ...]
+    subtitle: str = ""
+    historical_note: str = ""
+
+    def __post_init__(self) -> None:
+        if self.tier not in (1, 2, 3):
+            raise DecoderError(f"Finding.tier must be 1/2/3; got {self.tier!r}")
+        if not self.triples:
+            raise DecoderError(f"clinical finding {self.gene!r} has no rsid Triple (SPEC Rule 1a)")
+        if not self.citations:
+            raise DecoderError(f"clinical finding {self.gene!r} has no allow-list citation (SPEC Rule 1b)")
+
+
+@dataclass(frozen=True)
+class AlertRow:
+    """One row of the provider-ready alert table (CPIC-graded actionable finding)."""
+
+    drug: str
+    gene_genotype: str  # e.g. "GENE1 *2/*2 (rs0000001 AG)"
+    evidence: str  # display label e.g. "CPIC Level A"
+    recommendation: str
+    citation: Citation
+
+    def __post_init__(self) -> None:
+        if not self.recommendation:
+            raise DecoderError("AlertRow requires a recommendation")
+
+
+@dataclass(frozen=True)
+class GenotypeRow:
+    """One row of the per-document genotype table."""
+
+    triple: Triple
+    gene: str
+    tier: int
+
+    def __post_init__(self) -> None:
+        if self.tier not in (1, 2, 3):
+            raise DecoderError(f"GenotypeRow.tier must be 1/2/3; got {self.tier!r}")
+
+
+@dataclass(frozen=True)
+class ReportDocument:
+    """A structured analysis document the HelixyAI ``document.html`` renders.
+
+    Carries the Provenance Block (card + meta + Rule 6) and the structured body
+    (alert rows, findings, genotype rows). Separate from the markdown-centric
+    ``Document`` so the foundation's legacy path is untouched.
+    """
+
+    doc_id: str
+    title: str
+    group: str
+    provenance: ProvenanceBlock
+    kicker: str = ""
+    subtitle: str = ""
+    facts: tuple[str, ...] = ()
+    alert_rows: tuple[AlertRow, ...] = ()
+    findings: tuple[Finding, ...] = ()
+    genotype_rows: tuple[GenotypeRow, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not self.title.strip():
+            raise IncompleteProvenanceError("ReportDocument requires a title")
+
+
+@dataclass(frozen=True)
+class ReportDoc:
+    """One entry in the index/sidebar doc set (a card + a nav link)."""
+
+    doc_id: str
+    title: str
+    filename: str  # relative href, e.g. "Pharmacogenomics Analysis.html"
+    group: str
+    number: str  # ordinal label e.g. "04"
+    blurb: str = ""
+    tier_summary: str = ""  # e.g. "2 Tier 1"; "" = none
+    tier: int = 0  # 1 => card carries .t1 + data-tier="t1"; 0 => none
+    findings_label: str = ""  # e.g. "5 findings" / "pipeline"
+    available: bool = False
+    search_terms: str = ""
+    icon_token: str = "NODE"  # one of the template's ICON_* keys
+
+
+@dataclass(frozen=True)
+class ReportManifest:
+    """The whole report: the ordered doc set + report-level provenance + stats.
+
+    Single source the index generator AND each per-document nav (sidebar /
+    breadcrumb / pager) consume, so cross-links and the grid stay consistent.
+    """
+
+    subject_label: str
+    report_id: str
+    assembly: str
+    array: str
+    access_date: str
+    sources: tuple[str, ...]
+    source_sha256: str
+    supersedes: str
+    supersedes_sha256: str
+    docs: tuple[ReportDoc, ...]
+    groups: tuple[str, ...]
+    stats: dict  # {documents, variants_reviewed, tier1, cpic_a, carriers}
+    build_label: str = "genome-decoder"
+
+    def docs_in_group(self, group: str) -> list["ReportDoc"]:
+        return [d for d in self.docs if d.group == group]
+
+    def doc_index(self, doc_id: str) -> int:
+        for i, d in enumerate(self.docs):
+            if d.doc_id == doc_id:
+                return i
+        return -1
