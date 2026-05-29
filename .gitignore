@@ -1,6 +1,5 @@
 # Personal / workspace-only directories and files
-owner/
-sample/
+private/
 tmp/
 .claude/
 claude.md
