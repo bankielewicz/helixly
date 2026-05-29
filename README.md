@@ -4,7 +4,7 @@
   +-------------------------------------------------+
 -->
 
-# HelixyAI
+# HelixlyAI
 
 > Re-audit a consumer DNA export and your prior AI genome documents into a **deterministic, evidence-cited, self-contained HTML report** — every claim traced to your own genotype and an authoritative source.
 
@@ -15,19 +15,19 @@
 [![reproducible](https://img.shields.io/badge/output-byte--deterministic-2f7d6b)](#)
 [![license](https://img.shields.io/badge/license-TBD-8b97a1)](#license)
 
-**🌐 [helixyai.com](http://helixyai.com)** &nbsp;·&nbsp; **[▶ View a live sample report](http://helixyai.com/sample-report.html)**
+**🌐 [helixlyai.com](https://helixlyai.com)** &nbsp;·&nbsp; **[▶ View a live sample report](https://helixlyai.com/sample-report.html)**
 
 ```
   consumer DNA export
   (23andMe / Ancestry /     +-------------------+        +-------------------------------+
    MyHeritage)        --->  |   genome-reader   |  --->  |        genome-decoder         |  --->  self-contained
-  + prior AI docs           |    (substrate)    |  parse |   (8-phase audit + rebuild)   |        HelixyAI report
+  + prior AI docs           |    (substrate)    |  parse |   (8-phase audit + rebuild)   |        HelixlyAI report
                             +-------------------+        +-------------------------------+        (1 index +
                              detect / lookup              INDEX / audit / rebuild / verify        per-doc pages)
                              convert / translate          gated agent interpretation
 ```
 
-HelixyAI is two Claude Code **skills**. `genome-reader` is the parsing substrate; `genome-decoder` is the
+HelixlyAI is two Claude Code **skills**. `genome-reader` is the parsing substrate; `genome-decoder` is the
 interpretation-and-audit pipeline built on top of it. Deterministic Python tools do the mechanical, reproducible work;
 the agent does interpretation, always written through a gated path.
 
@@ -35,12 +35,12 @@ the agent does interpretation, always written through a gated path.
 
 ## What it does
 
-You hand HelixyAI two things:
+You hand HelixlyAI two things:
 
 1. a **consumer DNA export** (23andMe / AncestryDNA / MyHeritage), and
 2. a folder of **prior AI-generated genome-analysis documents**.
 
-It re-audits both and rebuilds them into a single, navigable HelixyAI report in which **every clinical claim is cited to
+It re-audits both and rebuilds them into a single, navigable HelixlyAI report in which **every clinical claim is cited to
 an rsID present in your data and to an authoritative source** — and every unsupported or aspirational claim from the
 prior documents has been removed. The report is self-contained HTML that runs anywhere, offline, with no external
 dependencies.
@@ -73,7 +73,7 @@ Two tracks, working together:
 
 ## Evidence & provenance discipline
 
-This is the core of HelixyAI. **No clinical claim reaches the page** unless it satisfies all three rules:
+This is the core of HelixlyAI. **No clinical claim reaches the page** unless it satisfies all three rules:
 
 1. **(a) Cite an rsID present in the INDEX**, with the subject's *observed* genotype.
 2. **(b) Cite an allow-list source.**
@@ -156,7 +156,7 @@ python -m pytest skills/genome-decoder/tests/ -q
 
 ## Output
 
-A **self-contained HelixyAI HTML report** — inline CSS/SVG, no external CDN/script/font loads, viewable offline:
+A **self-contained HelixlyAI HTML report** — inline CSS/SVG, no external CDN/script/font loads, viewable offline:
 
 - **one index page** — provenance overview, at-a-glance highlights, and a searchable/filterable contents grid;
 - **per-document pages** — one for each rebuilt analysis, interlinked and cross-referenced.
@@ -164,14 +164,14 @@ A **self-contained HelixyAI HTML report** — inline CSS/SVG, no external CDN/sc
 rsIDs, chromosome positions, and genotypes are rendered as monospace `<code>` chips so the evidence chain is legible at
 a glance. The same inputs always produce the same report.
 
-> **See it for yourself:** [helixyai.com/sample-report.html](http://helixyai.com/sample-report.html) renders a complete
-> (synthetic) HelixyAI report — index, per-document pages, provenance blocks, and citation chips.
+> **See it for yourself:** [helixlyai.com/sample-report.html](https://helixlyai.com/sample-report.html) renders a complete
+> (synthetic) HelixlyAI report — index, per-document pages, provenance blocks, and citation chips.
 
 ---
 
 ## Privacy
 
-- **Local-first.** All parsing and rendering run **on your machine**. There is no HelixyAI server in the loop.
+- **Local-first.** All parsing and rendering run **on your machine**. There is no HelixlyAI server in the loop.
 - **Never uploaded.** Your DNA export and the generated outputs are never sent off-device.
 - **Never committed.** Outputs and source data are never written to version control.
 
@@ -188,15 +188,15 @@ and independently re-verified.
 
 ## Medical disclaimer
 
-**HelixyAI is not a diagnostic tool.** It restates guidance from authoritative sources (CPIC / FDA / peer-reviewed
+**HelixlyAI is not a diagnostic tool.** It restates guidance from authoritative sources (CPIC / FDA / peer-reviewed
 literature) only. It does not diagnose. **Every clinical recommendation ends with “consult your prescribing
-clinician.”** Do not start, stop, or change any medication or treatment based on a HelixyAI report.
+clinician.”** Do not start, stop, or change any medication or treatment based on a HelixlyAI report.
 
 ---
 
 ## Not for
 
-HelixyAI does **not** perform, and is **not** intended for:
+HelixlyAI does **not** perform, and is **not** intended for:
 
 - ❌ **Diagnosis** of any condition.
 - ❌ **De-novo assembly.**
@@ -214,5 +214,5 @@ _TBD — license placeholder._
 
 ---
 
-<sub>HelixyAI · [helixyai.com](http://helixyai.com) · Your genome, made legible. Reports are informational and, in demonstrations, entirely
+<sub>HelixlyAI · [helixlyai.com](https://helixlyai.com) · Your genome, made legible. Reports are informational and, in demonstrations, entirely
 synthetic — all identifiers, rsIDs, genotypes, and citations are fictional.</sub>
