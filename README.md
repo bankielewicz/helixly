@@ -15,7 +15,7 @@
 [![reproducible](https://img.shields.io/badge/output-byte--deterministic-2f7d6b)](#)
 [![license](https://img.shields.io/badge/license-TBD-8b97a1)](#license)
 
-**🌐 [helixyai.com](https://helixyai.com)** &nbsp;·&nbsp; **[▶ View a live sample report](https://helixyai.com/sample-report.html)**
+**🌐 [helixyai.com](http://helixyai.com)** &nbsp;·&nbsp; **[▶ View a live sample report](http://helixyai.com/sample-report.html)**
 
 ```
   consumer DNA export
@@ -164,7 +164,7 @@ A **self-contained HelixyAI HTML report** — inline CSS/SVG, no external CDN/sc
 rsIDs, chromosome positions, and genotypes are rendered as monospace `<code>` chips so the evidence chain is legible at
 a glance. The same inputs always produce the same report.
 
-> **See it for yourself:** [helixyai.com/sample-report.html](https://helixyai.com/sample-report.html) renders a complete
+> **See it for yourself:** [helixyai.com/sample-report.html](http://helixyai.com/sample-report.html) renders a complete
 > (synthetic) HelixyAI report — index, per-document pages, provenance blocks, and citation chips.
 
 ---
@@ -214,5 +214,5 @@ _TBD — license placeholder._
 
 ---
 
-<sub>HelixyAI · [helixyai.com](https://helixyai.com) · Your genome, made legible. Reports are informational and, in demonstrations, entirely
+<sub>HelixyAI · [helixyai.com](http://helixyai.com) · Your genome, made legible. Reports are informational and, in demonstrations, entirely
 synthetic — all identifiers, rsIDs, genotypes, and citations are fictional.</sub>
