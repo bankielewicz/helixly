@@ -214,7 +214,10 @@ def check_genome_sha(genome: Path | None, docs: list[Path]) -> CheckResult:
             no_field.append(d.name)
             continue
         declaring += 1
-        if declared != live:
+        # SHA-256 hex is case-insensitive: a provenance block written by PowerShell
+        # Get-FileHash is uppercase, sha256_file is lowercase. Compare case-folded
+        # so identical hashes are not mis-reported as drift.
+        if declared.lower() != live.lower():
             mismatches.append(f"{d.name}: declares {declared}, live {live}")
     items = sorted(mismatches) + sorted(f"{n}: no source_genome_sha256 in provenance" for n in no_field)
     if mismatches:
