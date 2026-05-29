@@ -1,0 +1,31 @@
+# Aspirational Phrase Blacklist — enforceable encoding of SPEC Non-Negotiable
+# Rule 1(c) (SPEC "Appendix: Aspirational Phrase Blacklist", token list).
+#
+# One ERE alternative per line. _common._load_blacklist_patterns() compiles each
+# line case-insensitively (re.IGNORECASE) so capitalized natural-language
+# variants ("Likely normal", "May benefit") are caught — see feedback memory
+# 'blacklist-grep-case-insensitive'. Lines beginning with '#' and blank lines
+# are ignored.
+#
+# Exemptions (archive-attributed blockquotes, Glossary/Appendix sections,
+# inline/fenced code spans, and the stable ClinVar 'likely-*' classes with a
+# same-line citation) are applied by _common.find_blacklist_hits, NOT by editing
+# this list. Keep this list a faithful copy of the SPEC token set.
+\be\.g\.
+\betc\.
+\bothers\b
+\bincluding but not limited to\b
+\bmay\b
+\bmight\b
+\bcould\b
+\bshould consider\b
+\blikely\b
+\broughly\b
+\bapproximately\b
+\bbest\b
+\brecommended\b
+\bprefer\b
+\boptional\b
+\bif applicable\b
+\bwhere supported\b
+\bas needed\b
