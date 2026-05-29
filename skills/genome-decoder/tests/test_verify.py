@@ -187,6 +187,16 @@ def test_genome_sha_drift_fails(tmp_path):
     assert any("Pharmacogenomics Analysis.md" in it for it in sha.items)
 
 
+def test_genome_sha_compare_is_case_insensitive(tmp_path):
+    # A provenance block written by PowerShell Get-FileHash is uppercase; the live
+    # sha256_file is lowercase. The same hash must not read as drift.
+    out = tmp_path / "out"
+    out.mkdir()
+    genome = write_genome(tmp_path)
+    render_canonical_doc(out, genome_sha=C.sha256_file(genome).upper())
+    assert find(verify.run_verify(out, genome_path=genome), "genome_sha").status == "pass"
+
+
 def test_genotype_mismatch_fails(tmp_path):
     out = tmp_path / "out"
     out.mkdir()
