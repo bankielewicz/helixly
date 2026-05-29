@@ -82,8 +82,29 @@ scientific teal `#2f7d6b` · warm clay `#a9572a` (Tier 1 / alerts) on warm paper
 `#f6f5f0`; Georgia headlines · system-sans body · monospace for all genomic data;
 persistent grouped sidebar + breadcrumb + prev/next pager; tier badges (1/2/3).
 
-The matching **per-document** template (provenance card, provider-alert table,
-finding blocks with code-chip triples, genotype table, historical blockquotes,
-clinician disclaimer) is the representative `Pharmacogenomics Analysis.html` from
-the same design bundle — to be added when the renderer's per-doc HTML path
-(Workstream D2) is built.
+## templates/document.html — HelixyAI subpage (per-document) template
+
+The canonical HTML template for the **per-document subpages** — the data-breakdown
+pages the index links to. `index.html` (primary) and `document.html` (subpage) are
+a **pair**: the index is the landing/navigation hub; the document template is every
+analysis page beneath it. Same self-contained, synthetic-data-only, SPEC-contract
+properties and the same HelixyAI design system / shared chrome (top bar, grouped
+sidebar, footer, scripts) as the index — so the set renders as one cohesive report.
+
+Source: the representative `Pharmacogenomics Analysis.html` from the design bundle,
+which the design chat notes "defines the whole system." It exercises every
+per-document component the renderer must support:
+
+- **Provenance card** (assembly, source SHA-256, supersedes, evidence sources, access date)
+- **Provider-ready alert table** (Drug · Gene/Genotype · Evidence level · recommendation · source link; prints on one page)
+- **Per-finding blocks** with `rsID · chr:pos · genotype` code-chip triples + Tier 1/2/3 badges + citation links
+- **Semantic genotype table** (with working tier filters)
+- **De-emphasized historical-context blockquotes**
+- **Standing "consult your prescribing clinician" disclaimer**
+- **Breadcrumb + prev/next pager** tying it into the report
+
+The renderer (Workstream D2) generates each live document against this template's
+structure/styling; it is not served as-is. The bundle's other built docs
+(`Executive Summary.html`, `MTHFR Methylation.html`, `Allergy Histamine.html`)
+are programmatic reuses of this same system and are kept under `tmp/design-bundle/`
+for reference, not as separate templates.

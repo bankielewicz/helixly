@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pharmacogenomics Analysis — HelixyAI</title>
+
+<!-- Provenance fields mirrored as meta (machine-readable) -->
+<meta name="provenance:document" content="Pharmacogenomics Analysis">
+<meta name="provenance:assembly" content="GRCh37">
+<meta name="provenance:source_sha256" content="0000a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e">
+<meta name="provenance:supersedes" content="prior v1 (SHA 1111f0e9d8c7b6a5...)">
+<meta name="provenance:sources" content="CPIC, dbSNP, PubMed">
+<meta name="provenance:access_date" content="2026-01-15">
+<meta name="provenance:subject" content="Sample Subject (synthetic)">
+<meta name="robots" content="noindex">
+<meta name="description" content="HelixyAI Pharmacogenomics Analysis — synthetic demonstration report. All values fictional.">
+
+<style>
+/* ============================================================
+   HelixyAI — design tokens
+   Self-contained. No external assets, no CDN, no loaded fonts.
+   ============================================================ */
+:root{
+  --ink:#143049;          /* brand navy-slate / headings */
+  --ink-2:#1b2733;        /* body text */
+  --muted:#5a6b78;        /* secondary text */
+  --faint:#8b97a1;        /* tertiary */
+  --teal:#2f7d6b;         /* primary accent (scientific) */
+  --teal-dk:#235e51;
+  --teal-tint:#e3efeb;
+  --clay:#a9572a;         /* tier 1 / attention */
+  --clay-tint:#f3e7dd;
+  --blue:#3a6491;         /* tier 2 / level B */
+  --blue-tint:#e4ecf3;
+  --paper:#f6f5f0;        /* page background */
+  --surface:#ffffff;
+  --surface-2:#fbfaf6;
+  --line:#e4e0d6;
+  --line-2:#d6d1c4;
+  --code-bg:#eeece4;
+  --code-ink:#2a3a31;
+  --shadow:0 1px 2px rgba(20,48,73,.05),0 8px 28px rgba(20,48,73,.06);
+
+  --serif:Georgia,"Times New Roman",Cambria,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Code",Menlo,Consolas,"Liberation Mono",monospace;
+
+  --maxw:980px;
+  --sidebar:288px;
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink-2);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+a{color:var(--teal-dk);text-underline-offset:2px;text-decoration-thickness:1px;}
+a:hover{color:var(--teal);}
+
+.skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:10px 16px;z-index:50;border-radius:0 0 6px 0;}
+.skip:focus{left:0;}
+
+/* ---------- Brand mark ---------- */
+.mark{display:block;flex:none;}
+.mark .s1{stroke:var(--ink);}
+.mark .s2{stroke:var(--teal);}
+.mark .rung{stroke:var(--faint);stroke-width:1.6;}
+.wordmark{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;color:var(--ink);line-height:1;}
+.wordmark .ai{color:var(--teal);}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:30;
+  background:rgba(20,48,73,.97);
+  color:#eaf1f3;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.topbar-in{
+  max-width:1340px;margin:0 auto;padding:0 22px;
+  height:62px;display:flex;align-items:center;gap:18px;
+}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.brand .wordmark{color:#fff;font-size:21px;}
+.brand .wordmark .ai{color:#7fd0bf;}
+.brand .mark .s1{stroke:#cfe0e7;}
+.brand .mark .s2{stroke:#7fd0bf;}
+.brand .mark .rung{stroke:#5b7c8d;}
+.topbar .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#9fb6c2;border-left:1px solid rgba(255,255,255,.16);padding-left:16px;}
+.topbar .spacer{flex:1;}
+.topbar .subj{font-size:13px;color:#b9cad3;text-align:right;line-height:1.35;}
+.topbar .subj b{color:#fff;font-weight:600;}
+.btn{
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,.22);background:transparent;color:#eaf1f3;
+  padding:7px 14px;border-radius:7px;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{background:rgba(255,255,255,.1);}
+.btn svg{width:14px;height:14px;}
+
+/* ---------- Shell layout ---------- */
+.shell{max-width:1340px;margin:0 auto;display:flex;align-items:flex-start;}
+.sidebar{
+  width:var(--sidebar);flex:none;position:sticky;top:62px;
+  height:calc(100vh - 62px);overflow-y:auto;
+  border-right:1px solid var(--line);
+  background:var(--surface-2);
+  padding:22px 0 40px;
+}
+.sidebar.collapsed{width:0;overflow:hidden;border:none;}
+.side-head{padding:0 20px 14px;display:flex;align-items:center;justify-content:space-between;}
+.side-head .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:600;}
+.subjcard{margin:0 16px 18px;padding:13px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;}
+.subjcard .nm{font-family:var(--serif);font-size:16px;color:var(--ink);font-weight:700;}
+.subjcard .meta{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5;}
+.subjcard .meta .k{color:var(--faint);}
+
+.navgroup{margin-top:6px;}
+.navgroup>.gh{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700;padding:10px 20px 5px;}
+.navlink{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 20px 7px 20px;font-size:13.5px;color:var(--ink-2);text-decoration:none;
+  border-left:3px solid transparent;line-height:1.3;
+}
+.navlink:hover{background:#f0eee7;color:var(--ink);}
+.navlink.active{background:var(--teal-tint);border-left-color:var(--teal);color:var(--teal-dk);font-weight:600;}
+.navlink .dot{width:6px;height:6px;border-radius:50%;flex:none;background:var(--line-2);}
+.navlink.active .dot{background:var(--teal);}
+.navlink .ct{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--faint);}
+.navlink.t1 .dot{background:var(--clay);}
+
+/* ---------- Main column ---------- */
+.main{flex:1;min-width:0;padding:30px 40px 70px;}
+.doc{max-width:var(--maxw);margin:0 auto;}
+
+.crumb{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:18px;flex-wrap:wrap;}
+.crumb a{color:var(--muted);text-decoration:none;}
+.crumb a:hover{color:var(--teal);}
+.crumb .sep{color:var(--line-2);}
+.crumb .cur{color:var(--ink);font-weight:600;}
+
+.dochead{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:8px;}
+.dochead .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-dk);font-weight:700;}
+.dochead h1{font-family:var(--serif);font-size:40px;line-height:1.08;color:var(--ink);margin:8px 0 0;font-weight:700;letter-spacing:-.015em;}
+.dochead .sub{font-size:16px;color:var(--muted);margin-top:12px;max-width:60ch;text-wrap:pretty;}
+.dochead .facts{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:16px;font-size:12.5px;color:var(--muted);}
+.dochead .facts b{color:var(--ink-2);font-weight:600;}
+
+/* section title */
+.sect{margin-top:42px;}
+.sect>h2{font-family:var(--serif);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 14px;display:flex;align-items:center;gap:12px;}
+.sect>h2::after{content:"";flex:1;height:1px;background:var(--line);}
+
+/* ---------- Provenance card ---------- */
+.prov{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.prov .ph{display:flex;align-items:center;gap:9px;padding:12px 18px;border-bottom:1px solid var(--line);background:var(--surface-2);}
+.prov .ph .ic{width:16px;height:16px;color:var(--teal-dk);}
+.prov .ph .t{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink);}
+.prov .ph .v{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--code-bg);padding:3px 9px;border-radius:20px;}
+.prov dl{margin:0;padding:6px 18px 16px;display:grid;grid-template-columns:repeat(2,1fr);gap:0 36px;}
+.prov .row{display:flex;flex-direction:column;padding:10px 0;border-bottom:1px dashed var(--line);}
+.prov dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-bottom:3px;}
+.prov dd{margin:0;font-family:var(--mono);font-size:12.5px;color:var(--ink-2);word-break:break-all;line-height:1.5;}
+.prov dd .sha{color:var(--teal-dk);}
+.prov dd a{font-family:var(--mono);}
+
+/* ---------- Provider Alert Card ---------- */
+.alert{border:1.5px solid var(--clay);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);}
+.alert .ah{display:flex;align-items:center;gap:10px;background:var(--clay);color:#fff;padding:12px 18px;}
+.alert .ah .ic{width:17px;height:17px;}
+.alert .ah .t{font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;}
+.alert .ah .meta{margin-left:auto;font-size:11.5px;color:#f3e0d4;font-family:var(--mono);}
+.alert-tablewrap{overflow-x:auto;}
+table.alert-tbl{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.alert-tbl th{
+  text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;
+  padding:11px 16px;border-bottom:1px solid var(--line-2);background:var(--surface-2);white-space:nowrap;
+}
+table.alert-tbl td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top;}
+table.alert-tbl tr:last-child td{border-bottom:none;}
+table.alert-tbl .drug{font-weight:600;color:var(--ink);}
+table.alert-tbl .rec{color:var(--ink-2);max-width:34ch;text-wrap:pretty;}
+.gg{font-family:var(--mono);font-size:12px;}
+.gg .star{color:var(--clay);font-weight:600;}
+
+/* evidence badges */
+.ev{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;font-family:var(--sans);letter-spacing:.02em;}
+.ev::before{content:"";width:6px;height:6px;border-radius:50%;}
+.ev.a{background:var(--teal-tint);color:var(--teal-dk);}
+.ev.a::before{background:var(--teal);}
+.ev.b{background:var(--blue-tint);color:var(--blue);}
+.ev.b::before{background:var(--blue);}
+.ev.c{background:#eee;color:#5f5f5f;}
+.ev.c::before{background:#9a9a9a;}
+
+/* ---------- Code chips (genomic triple) ---------- */
+code.dna{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);color:var(--code-ink);
+  padding:2px 8px;border-radius:6px;border:1px solid var(--line-2);white-space:nowrap;
+}
+code.dna.rs{color:var(--teal-dk);}
+code.dna.pos{color:var(--blue);}
+code.dna.gt{color:var(--clay);font-weight:600;}
+.triple{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;}
+
+/* ---------- Finding blocks ---------- */
+.finding{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow);}
+.finding.t1{border-left:4px solid var(--clay);}
+.finding.t2{border-left:4px solid var(--blue);}
+.finding.t3{border-left:4px solid var(--faint);}
+.finding .fh{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+.finding .fh h3{font-family:var(--serif);font-size:23px;color:var(--ink);margin:0;font-weight:700;line-height:1.15;}
+.finding .fh .fn{font-size:13px;color:var(--muted);margin-top:3px;}
+.finding .fh .badges{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.tier{font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 11px;border-radius:20px;white-space:nowrap;}
+.tier.t1{background:var(--clay-tint);color:var(--clay);}
+.tier.t2{background:var(--blue-tint);color:var(--blue);}
+.tier.t3{background:#ededea;color:#62655f;}
+.finding .triple-row{margin:16px 0 4px;}
+.finding p{margin:12px 0;color:var(--ink-2);text-wrap:pretty;}
+.finding .cite{font-size:13px;color:var(--muted);margin-top:10px;}
+.finding .cite a{font-weight:600;}
+
+/* historical context blockquote */
+blockquote.hist{
+  margin:16px 0 0;padding:12px 16px;border-left:3px solid var(--line-2);
+  background:repeating-linear-gradient(135deg,#f4f3ee,#f4f3ee 8px,#f1f0ea 8px,#f1f0ea 16px);
+  color:var(--faint);font-size:13px;font-style:italic;border-radius:0 8px 8px 0;
+}
+blockquote.hist .lbl{display:inline-block;font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);background:#e8e6df;padding:2px 7px;border-radius:4px;margin-right:8px;}
+
+/* ---------- Filter bar ---------- */
+.filters{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.filters .fl{font-size:12px;color:var(--muted);margin-right:2px;}
+.chip{font:inherit;font-size:12.5px;cursor:pointer;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);padding:5px 13px;border-radius:20px;display:inline-flex;align-items:center;gap:6px;}
+.chip:hover{border-color:var(--teal);color:var(--teal-dk);}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.chip .n{font-family:var(--mono);font-size:10.5px;opacity:.7;}
+
+/* ---------- Genotype table ---------- */
+.gtwrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);}
+.gtscroll{overflow-x:auto;}
+table.gt{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.gt caption{text-align:left;padding:13px 18px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;background:var(--surface-2);border-bottom:1px solid var(--line);}
+table.gt th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:700;padding:10px 18px;border-bottom:1px solid var(--line-2);}
+table.gt td{padding:11px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12.5px;color:var(--ink-2);}
+table.gt tr:last-child td{border-bottom:none;}
+table.gt tbody tr:hover{background:var(--surface-2);}
+table.gt .gene{color:var(--ink);font-weight:600;}
+.minitier{font-family:var(--sans);font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;}
+.minitier.t1{background:var(--clay-tint);color:var(--clay);}
+.minitier.t2{background:var(--blue-tint);color:var(--blue);}
+.minitier.t3{background:#ededea;color:#62655f;}
+
+/* ---------- Disclaimer ---------- */
+.disclaimer{
+  display:flex;gap:14px;align-items:flex-start;
+  background:var(--clay-tint);border:1px solid #e6d2c2;border-radius:12px;padding:16px 20px;margin-top:24px;
+}
+.disclaimer .ic{width:22px;height:22px;color:var(--clay);flex:none;margin-top:2px;}
+.disclaimer .tx{font-size:13.5px;color:#6e4226;line-height:1.55;}
+.disclaimer .tx b{color:var(--clay);}
+
+/* ---------- Pager ---------- */
+.pager{display:flex;gap:14px;margin-top:40px;border-top:1px solid var(--line);padding-top:24px;}
+.pager a{flex:1;text-decoration:none;border:1px solid var(--line);border-radius:12px;padding:14px 18px;background:var(--surface);color:var(--ink-2);transition:border-color .15s;}
+.pager a:hover{border-color:var(--teal);}
+.pager a.next{text-align:right;}
+.pager .dir{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700;}
+.pager .nm{font-family:var(--serif);font-size:17px;color:var(--ink);font-weight:700;margin-top:4px;}
+
+/* ---------- Footer ---------- */
+footer.site{background:var(--ink);color:#c6d4dc;margin-top:0;}
+footer.site .fin{max-width:1340px;margin:0 auto;padding:34px 40px;display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;}
+footer.site .fbrand{display:flex;align-items:center;gap:11px;}
+footer.site .wordmark{color:#fff;font-size:19px;}
+footer.site .wordmark .ai{color:#7fd0bf;}
+footer.site .mark .s1{stroke:#cfe0e7;}footer.site .mark .s2{stroke:#7fd0bf;}footer.site .mark .rung{stroke:#5b7c8d;}
+footer.site .col{font-size:12.5px;line-height:1.7;}
+footer.site .col a{color:#9fc7bd;text-decoration:none;}
+footer.site .col a:hover{color:#fff;}
+footer.site .ch{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7d97a4;margin-bottom:6px;font-weight:700;}
+footer.site .legal{flex:1;min-width:240px;font-size:11.5px;color:#90a8b3;line-height:1.6;}
+footer.site .url{font-family:var(--mono);color:#7fd0bf;}
+footer.site .bottom{border-top:1px solid rgba(255,255,255,.1);}
+footer.site .bottom .b{max-width:1340px;margin:0 auto;padding:14px 40px;font-size:11.5px;color:#7d97a4;display:flex;gap:16px;flex-wrap:wrap;}
+
+/* ---------- Responsive ---------- */
+@media(max-width:900px){
+  .sidebar{display:none;}
+  .main{padding:24px 20px 60px;}
+  .dochead h1{font-size:30px;}
+  .prov dl{grid-template-columns:1fr;}
+}
+
+/* ---------- Print ---------- */
+@media print{
+  :root{--paper:#fff;}
+  body{background:#fff;font-size:11pt;}
+  .topbar,.sidebar,.btn,.filters,.pager,.skip,footer.site .bottom{display:none !important;}
+  .shell{display:block;}
+  .main{padding:0;}
+  .doc{max-width:100%;}
+  .prov,.alert,.finding,.gtwrap,.disclaimer{box-shadow:none;break-inside:avoid;}
+  .alert{break-inside:avoid;page-break-inside:avoid;}
+  .finding{break-inside:avoid;}
+  a{color:#000;text-decoration:underline;}
+  .dochead h1{font-size:26pt;}
+  footer.site{background:#fff;color:#333;border-top:1px solid #ccc;}
+  footer.site .wordmark{color:#000;}footer.site .col a{color:#333;}
+  .sect>h2{color:#000;}
+  @page{margin:14mm;}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to report content</a>
+
+<!-- ===================== TOP BAR ===================== -->
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html" aria-label="HelixyAI home">
+      <svg class="mark" width="26" height="34" viewBox="0 0 26 40" fill="none" aria-hidden="true">
+        <path class="s1" d="M7 3 C20 9 20 14 13 20 C6 26 6 31 19 37" stroke-width="2.1" stroke-linecap="round"/>
+        <path class="s2" d="M19 3 C6 9 6 14 13 20 C20 26 20 31 7 37" stroke-width="2.1" stroke-linecap="round"/>
+        <line class="rung" x1="9.5" y1="6.5" x2="16.5" y2="6.5"/>
+        <line class="rung" x1="8" y1="12" x2="18" y2="12"/>
+        <line class="rung" x1="8" y1="28" x2="18" y2="28"/>
+        <line class="rung" x1="9.5" y1="33.5" x2="16.5" y2="33.5"/>
+      </svg>
+      <span class="wordmark">Helixy<span class="ai">AI</span></span>
+    </a>
+    <span class="tag">Genome Report</span>
+    <span class="spacer"></span>
+    <span class="subj">Prepared for <b>Sample Subject</b><br>Report ID HX-2026-0042 · synthetic</span>
+    <button class="btn" id="sidebarToggle" type="button" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <button class="btn" onclick="window.print()" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>
+      Print
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- ===================== SIDEBAR ===================== -->
+  <nav class="sidebar" id="sidebar" aria-label="Report contents">
+    <div class="side-head">
+      <span class="lbl">Report Index</span>
+    </div>
+    <div class="subjcard">
+      <div class="nm">Sample Subject</div>
+      <div class="meta">
+        <span class="k">array</span> consumer SNP · v5<br>
+        <span class="k">assembly</span> GRCh37<br>
+        <span class="k">generated</span> 2026-01-15
+      </div>
+    </div>
+
+    <div class="navgroup">
+      <div class="gh">Overview</div>
+      <a class="navlink" href="Executive Summary.html"><span class="dot"></span>Executive Summary<span class="ct">12</span></a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Methodology &amp; Provenance</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Glossary</a>
+    </div>
+    <div class="navgroup">
+      <div class="gh">Pharmacology</div>
+      <a class="navlink active t1" href="#" aria-current="page"><span class="dot"></span>Pharmacogenomics<span class="ct">5</span></a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Drug Metabolism (CYP450)<span class="ct">7</span></a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Caffeine Metabolism</a>
+    </div>
+    <div class="navgroup">
+      <div class="gh">Methylation &amp; Metabolism</div>
+      <a class="navlink t1" href="MTHFR Methylation.html"><span class="dot"></span>MTHFR / Methylation<span class="ct">3</span></a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Folate &amp; B12</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Lipid Metabolism</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Alcohol Flush (ALDH2)</a>
+    </div>
+    <div class="navgroup">
+      <div class="gh">Nutrition</div>
+      <a class="navlink" href="index.html"><span class="dot"></span>Lactose Tolerance</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Vitamin D</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Iron / HFE<span class="ct">2</span></a>
+    </div>
+    <div class="navgroup">
+      <div class="gh">Immunity &amp; Allergy</div>
+      <a class="navlink" href="Allergy Histamine.html"><span class="dot"></span>Allergy &amp; Histamine</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Celiac (HLA-DQ)</a>
+    </div>
+    <div class="navgroup">
+      <div class="gh">Traits &amp; Carrier</div>
+      <a class="navlink" href="index.html"><span class="dot"></span>Sleep &amp; Chronotype</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Sensory &amp; Taste</a>
+      <a class="navlink" href="index.html"><span class="dot"></span>Carrier Status<span class="ct">4</span></a>
+    </div>
+  </nav>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="main" id="main">
+    <article class="doc">
+
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="index.html">HelixyAI Report</a>
+        <span class="sep">/</span>
+        <a href="index.html">Pharmacology</a>
+        <span class="sep">/</span>
+        <span class="cur">Pharmacogenomics Analysis</span>
+      </nav>
+
+      <div class="dochead">
+        <div class="kicker">Pharmacology · Document 04 of 24</div>
+        <h1>Pharmacogenomics Analysis</h1>
+        <p class="sub">How <b>Sample Subject</b>'s genotype is predicted to influence response to common medications, with provider-ready, evidence-graded recommendations. All values below are synthetic and for demonstration only.</p>
+        <div class="facts">
+          <span><b>5</b> actionable findings</span>
+          <span><b>2</b> Tier 1</span>
+          <span><b>1</b> CPIC Level A</span>
+          <span>Reviewed <b>2026-01-15</b></span>
+        </div>
+      </div>
+
+      <!-- ===== PROVENANCE ===== -->
+      <section class="sect" aria-labelledby="prov-h">
+        <h2 id="prov-h">Provenance</h2>
+        <div class="prov">
+          <div class="ph">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span class="t">Data Provenance</span>
+            <span class="v">verified chain</span>
+          </div>
+          <dl>
+            <div class="row"><dt>Document</dt><dd>Pharmacogenomics Analysis</dd></div>
+            <div class="row"><dt>Source assembly</dt><dd>GRCh37 <span style="color:var(--faint)">(hg19)</span></dd></div>
+            <div class="row"><dt>Source file SHA-256</dt><dd><span class="sha">0000a1b2c3d4e5f6…4b5c6d7e</span></dd></div>
+            <div class="row"><dt>Supersedes</dt><dd>prior v1 · SHA <span class="sha">1111f0e9…</span></dd></div>
+            <div class="row"><dt>Evidence sources</dt><dd><a href="https://cpicpgx.org/" rel="external" data-access-date="2026-01-15">CPIC</a>, <a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external" data-access-date="2026-01-15">dbSNP</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed</a></dd></div>
+            <div class="row"><dt>Access date</dt><dd>2026-01-15</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- ===== PROVIDER ALERT CARD ===== -->
+      <section class="sect" aria-labelledby="alert-h">
+        <h2 id="alert-h">Provider Alert</h2>
+        <div class="alert" role="region" aria-label="Actionable pharmacogenomic findings">
+          <div class="ah">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0z"/></svg>
+            <span class="t">Actionable Findings — Provider Ready</span>
+            <span class="meta">5 drugs · review before prescribing</span>
+          </div>
+          <div class="alert-tablewrap">
+            <table class="alert-tbl">
+              <thead>
+                <tr><th>Drug</th><th>Gene / Genotype</th><th>Evidence</th><th>Recommendation</th><th>Source</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="drug">ExampleDrug&nbsp;A</td>
+                  <td class="gg">GENE1 <span class="star">*2/*2</span><br>(rs0000001 AG)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Reduced-function — consider alternative agent; consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">ExampleDrug&nbsp;B</td>
+                  <td class="gg">GENE2 <span class="star">*1/*17</span><br>(rs0000002 CC)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Ultra-rapid metabolizer — standard dose may be sub-therapeutic; monitor response.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">ExampleDrug&nbsp;C</td>
+                  <td class="gg">GENE3 <span class="star">*1/*3</span><br>(rs0000003 GT)</td>
+                  <td><span class="ev b">CPIC Level B</span></td>
+                  <td class="rec">Intermediate activity — initiate at standard dose with clinical monitoring.</td>
+                  <td><a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">ExampleDrug&nbsp;D</td>
+                  <td class="gg">GENE4 <span class="star">*1/*1</span><br>(rs0000004 AA)</td>
+                  <td><span class="ev c">CPIC Level C</span></td>
+                  <td class="rec">Normal metabolizer — no genotype-guided change indicated at this time.</td>
+                  <td><a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed&nbsp;↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PER-FINDING BLOCKS ===== -->
+      <section class="sect" aria-labelledby="find-h">
+        <h2 id="find-h">Per-Gene Findings</h2>
+
+        <div class="filters" role="group" aria-label="Filter findings by significance tier">
+          <span class="fl">Filter:</span>
+          <button class="chip on" data-tier="all" type="button">All <span class="n">5</span></button>
+          <button class="chip" data-tier="1" type="button">Tier 1 <span class="n">2</span></button>
+          <button class="chip" data-tier="2" type="button">Tier 2 <span class="n">2</span></button>
+          <button class="chip" data-tier="3" type="button">Tier 3 <span class="n">1</span></button>
+        </div>
+
+        <div class="finding t1" data-tier="1">
+          <div class="fh">
+            <div>
+              <h3>GENE1 — Reduced Metabolizer</h3>
+              <div class="fn">Cytochrome P450 family · enzyme activity</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t1">Tier 1</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs0000001" data-chrom="7" data-pos="1000000" data-genotype="AG">rs0000001</code>
+              <code class="dna pos" data-rsid="rs0000001" data-chrom="7" data-pos="1000000">7:1,000,000</code>
+              <code class="dna gt" data-rsid="rs0000001" data-genotype="AG">AG</code>
+            </span>
+          </div>
+          <p>Sample Subject carries one reduced-function allele, predicting <b>intermediate enzyme activity</b>, per the CPIC GENE1 guideline. For substrates of this enzyme, exposure may be elevated relative to normal metabolizers.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC GENE1 Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs0000001" rel="external" data-access-date="2026-01-15">dbSNP rs0000001 ↗</a></div>
+          <blockquote class="hist"><span class="lbl">Historical context</span>Prior analysis (v1) flagged this region with a provisional call; superseded by the current GRCh37-aligned result.</blockquote>
+        </div>
+
+        <div class="finding t1" data-tier="1">
+          <div class="fh">
+            <div>
+              <h3>GENE2 — Ultra-rapid Metabolizer</h3>
+              <div class="fn">Hepatic clearance · gain-of-function</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t1">Tier 1</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs0000002" data-chrom="10" data-pos="2000000" data-genotype="CC">rs0000002</code>
+              <code class="dna pos" data-rsid="rs0000002" data-chrom="10" data-pos="2000000">10:2,000,000</code>
+              <code class="dna gt" data-rsid="rs0000002" data-genotype="CC">CC</code>
+            </span>
+          </div>
+          <p>A duplicated active allele predicts <b>ultra-rapid metabolism</b>. Standard doses of affected substrates may yield sub-therapeutic plasma concentrations; therapeutic response should be monitored.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC GENE2 Guideline ↗</a></div>
+        </div>
+
+        <div class="finding t2" data-tier="2">
+          <div class="fh">
+            <div>
+              <h3>GENE3 — Intermediate Activity</h3>
+              <div class="fn">Transport &amp; uptake</div>
+            </div>
+            <div class="badges"><span class="ev b">CPIC Level B</span><span class="tier t2">Tier 2</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs0000003" data-chrom="12" data-pos="3000000" data-genotype="GT">rs0000003</code>
+              <code class="dna pos" data-rsid="rs0000003" data-chrom="12" data-pos="3000000">12:3,000,000</code>
+              <code class="dna gt" data-rsid="rs0000003" data-genotype="GT">GT</code>
+            </span>
+          </div>
+          <p>Heterozygous genotype associated with modestly <b>reduced transporter activity</b>. Clinical impact is drug-dependent; initiate at standard dose with monitoring.</p>
+          <div class="cite">Source: <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed PMID 00000003 ↗</a></div>
+          <blockquote class="hist"><span class="lbl">Historical context</span>Earlier panel reported this variant under a legacy rsID merge; current annotation reflects the dbSNP build at access date.</blockquote>
+        </div>
+
+        <div class="finding t2" data-tier="2">
+          <div class="fh">
+            <div>
+              <h3>GENE4 — Normal Function</h3>
+              <div class="fn">Phase II conjugation</div>
+            </div>
+            <div class="badges"><span class="ev c">CPIC Level C</span><span class="tier t2">Tier 2</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs0000004" data-chrom="4" data-pos="4000000" data-genotype="AA">rs0000004</code>
+              <code class="dna pos" data-rsid="rs0000004" data-chrom="4" data-pos="4000000">4:4,000,000</code>
+              <code class="dna gt" data-rsid="rs0000004" data-genotype="AA">AA</code>
+            </span>
+          </div>
+          <p>Reference genotype predicting <b>normal enzyme function</b>. No genotype-guided dosing change is indicated; included for completeness of the panel.</p>
+          <div class="cite">Source: <a href="https://www.ncbi.nlm.nih.gov/snp/rs0000004" rel="external" data-access-date="2026-01-15">dbSNP rs0000004 ↗</a></div>
+        </div>
+
+        <div class="finding t3" data-tier="3">
+          <div class="fh">
+            <div>
+              <h3>GENE5 — Uncertain Significance</h3>
+              <div class="fn">Regulatory region · limited evidence</div>
+            </div>
+            <div class="badges"><span class="ev c">Limited</span><span class="tier t3">Tier 3</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs0000005" data-chrom="2" data-pos="5000000" data-genotype="CT">rs0000005</code>
+              <code class="dna pos" data-rsid="rs0000005" data-chrom="2" data-pos="5000000">2:5,000,000</code>
+              <code class="dna gt" data-rsid="rs0000005" data-genotype="CT">CT</code>
+            </span>
+          </div>
+          <p>Variant of <b>uncertain significance</b>. Reported for transparency; current evidence is insufficient to support a clinical recommendation.</p>
+          <div class="cite">Source: <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed PMID 00000005 ↗</a></div>
+        </div>
+      </section>
+
+      <!-- ===== GENOTYPE TABLE ===== -->
+      <section class="sect" aria-labelledby="gt-h">
+        <h2 id="gt-h">Genotype Table</h2>
+        <div class="gtwrap">
+          <div class="gtscroll">
+            <table class="gt">
+              <caption>Variants evaluated in this document — synthetic</caption>
+              <thead>
+                <tr><th scope="col">rsID</th><th scope="col">chr:pos</th><th scope="col">Genotype</th><th scope="col">Gene</th><th scope="col">Significance</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code class="dna rs" data-rsid="rs0000001" data-chrom="7" data-pos="1000000" data-genotype="AG">rs0000001</code></td><td>7:1,000,000</td><td>AG</td><td class="gene">GENE1</td><td><span class="minitier t1">Tier 1</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs0000002" data-chrom="10" data-pos="2000000" data-genotype="CC">rs0000002</code></td><td>10:2,000,000</td><td>CC</td><td class="gene">GENE2</td><td><span class="minitier t1">Tier 1</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs0000003" data-chrom="12" data-pos="3000000" data-genotype="GT">rs0000003</code></td><td>12:3,000,000</td><td>GT</td><td class="gene">GENE3</td><td><span class="minitier t2">Tier 2</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs0000004" data-chrom="4" data-pos="4000000" data-genotype="AA">rs0000004</code></td><td>4:4,000,000</td><td>AA</td><td class="gene">GENE4</td><td><span class="minitier t2">Tier 2</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs0000005" data-chrom="2" data-pos="5000000" data-genotype="CT">rs0000005</code></td><td>2:5,000,000</td><td>CT</td><td class="gene">GENE5</td><td><span class="minitier t3">Tier 3</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DISCLAIMER ===== -->
+      <div class="disclaimer" role="note">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+        <div class="tx"><b>Consult your prescribing clinician.</b> This HelixyAI report is a synthetic demonstration generated from a consumer DNA export. It is not a diagnosis, prescription, or substitute for professional medical advice. Do not start, stop, or change any medication based on this document. Genotype is one of many factors influencing drug response.</div>
+      </div>
+
+      <!-- ===== PAGER ===== -->
+      <nav class="pager" aria-label="Document pager">
+        <a class="prev" href="index.html"><div class="dir">← Previous</div><div class="nm">Drug Metabolism (CYP450)</div></a>
+        <a class="next" href="MTHFR Methylation.html"><div class="dir">Next →</div><div class="nm">MTHFR / Methylation</div></a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="fin">
+    <div style="min-width:200px">
+      <div class="fbrand">
+        <svg class="mark" width="24" height="31" viewBox="0 0 26 40" fill="none" aria-hidden="true">
+          <path class="s1" d="M7 3 C20 9 20 14 13 20 C6 26 6 31 19 37" stroke-width="2.1" stroke-linecap="round"/>
+          <path class="s2" d="M19 3 C6 9 6 14 13 20 C20 26 20 31 7 37" stroke-width="2.1" stroke-linecap="round"/>
+          <line class="rung" x1="9.5" y1="6.5" x2="16.5" y2="6.5"/>
+          <line class="rung" x1="8" y1="12" x2="18" y2="12"/>
+          <line class="rung" x1="8" y1="28" x2="18" y2="28"/>
+          <line class="rung" x1="9.5" y1="33.5" x2="16.5" y2="33.5"/>
+        </svg>
+        <span class="wordmark">Helixy<span class="ai">AI</span></span>
+      </div>
+      <div style="font-size:12px;color:#90a8b3;margin-top:10px;">Your genome, made legible.<br><span class="url">helixyai.com</span></div>
+    </div>
+    <div class="col">
+      <div class="ch">Report</div>
+      <a href="index.html">Index</a><br>
+      <a href="index.html">Executive Summary</a><br>
+      <a href="index.html">Methodology</a><br>
+      <a href="index.html">Glossary</a>
+    </div>
+    <div class="col">
+      <div class="ch">Sources</div>
+      <a href="https://cpicpgx.org/" rel="external">CPIC</a><br>
+      <a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external">dbSNP</a><br>
+      <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external">PubMed</a>
+    </div>
+    <div class="legal">
+      <div class="ch">Disclaimer</div>
+      HelixyAI reports are informational and synthetic in this demonstration. All names, identifiers, rsIDs, genotypes, and citations shown are fictional. Not medical advice — always consult your prescribing clinician.
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="b">
+      <span>© 2026 HelixyAI · <span class="url" style="color:#7fd0bf">helixyai.com</span></span>
+      <span>Assembly GRCh37</span>
+      <span>Generated 2026-01-15</span>
+      <span>Document SHA 0000a1b2…4b5c6d7e</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* Sidebar collapse */
+  var tog=document.getElementById('sidebarToggle'),sb=document.getElementById('sidebar');
+  if(tog&&sb){tog.addEventListener('click',function(){sb.classList.toggle('collapsed');});}
+
+  /* Tier filter */
+  var chips=document.querySelectorAll('.chip[data-tier]');
+  var findings=document.querySelectorAll('.finding[data-tier]');
+  chips.forEach(function(c){
+    c.addEventListener('click',function(){
+      chips.forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on');
+      var t=c.getAttribute('data-tier');
+      findings.forEach(function(f){
+        f.style.display=(t==='all'||f.getAttribute('data-tier')===t)?'':'none';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
