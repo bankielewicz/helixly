@@ -1,10 +1,12 @@
 """Regression tests for the aspirational-phrase blacklist gate (SPEC Rule 1).
 
-Audit finding 1 (2026-05-28): the archive-attributed-quote exemption only
-exempted the single line carrying the ``[verbatim from archive]`` marker, so the
-continuation lines of a multi-line attributed blockquote — the pattern Karen's
-Phase 5/7 reference docs relied on — were flagged and the write gate refused to
-write the document. These tests pin the corrected behaviour.
+Audit finding 1: the archive-attributed-quote exemption only exempted the single
+line carrying the ``[verbatim from archive]`` marker, so the continuation lines of
+a multi-line attributed blockquote — the pattern a prior-analysis archive's
+medical-notes/checkpoint rebuilds rely on — were flagged and the write gate
+refused to write the document. These tests pin the corrected behaviour.
+
+All fixtures use synthetic placeholder data only.
 """
 
 import _common
@@ -13,9 +15,9 @@ import _common
 def test_multiline_archive_blockquote_is_exempt():
     """A multi-line attributed blockquote is exempt on every line (the fix)."""
     text = (
-        "## Crohn's Disease Monitoring Protocol\n"
+        "## Sample Condition Monitoring Protocol\n"
         "\n"
-        "> [verbatim from archive: 21_Medical_Notes.md lines 124-129]\n"
+        "> [verbatim from archive: 04_Sample_Notes.md lines 124-129]\n"
         "> This variant may benefit from monitoring and could increase risk\n"
         "> roughly twofold; clinicians should consider screening as needed.\n"
     )
@@ -26,16 +28,16 @@ def test_marker_not_required_on_first_blockquote_line():
     """Exemption holds wherever in the run the marker sits (order-independent)."""
     text = (
         "> The prior analysis said risk may be elevated and could vary.\n"
-        "> [verbatim from archive: 18_Comprehensive_Genome_Analysis.md]\n"
+        "> [verbatim from archive: 08_Sample_Comprehensive.md]\n"
     )
     assert _common.find_blacklist_hits(text) == []
 
 
 def test_single_line_removed_claim_bullet_is_exempt():
-    """The Provenance Summary 'Removed claims' bullet quotes v1 text inline."""
+    """The Provenance Summary 'Removed claims' bullet quotes archive text inline."""
     text = (
         "**Removed claims** (verbatim quote → reason removed):\n"
-        '- "may benefit from gluten avoidance" [verbatim from archive: 07_Nutrition_Analysis.md] '
+        '- "may benefit from supplement X" [verbatim from archive: 05_Sample_Nutrition.md] '
         "→ reason: aspirational phrasing\n"
     )
     assert _common.find_blacklist_hits(text) == []
@@ -84,34 +86,34 @@ def test_write_doc_writes_a_doc_with_a_multiline_archive_quote(tmp_path):
     from _common import Document, ProvenanceBlock, Section
 
     prov = ProvenanceBlock(
-        doc_id="21_Medical_Notes",
+        doc_id="04_Sample_Notes",
         produced_by="claude-opus-4-8[1m]",
-        produced_on=date(2026, 5, 28),
+        produced_on=date(2026, 1, 15),
         phase=5,
-        source_genome_path="C:/Projects/Health/karen/genome.txt",
-        source_genome_sha256="60cc802d",
+        source_genome_path="/data/sample_genome.txt",
+        source_genome_sha256="0000000000000000",
         source_genome_assembly="GRCh37",
-        source_genome_line_count_verified=632035,
-        genotype_index_path="C:/Projects/Health/karen/claude.ai-docs/INDEX_genotype_truth.tsv",
-        genotype_index_sha256="a149de3a",
+        source_genome_line_count_verified=100000,
+        genotype_index_path="/data/sample/INDEX_genotype_truth.tsv",
+        genotype_index_sha256="1111111111111111",
         removed_claims_count=0,
         added_claims_count=0,
         external_sources_used=("dbSNP",),
-        external_sources_access_date=date(2026, 5, 28),
-        supersedes="C:/Projects/Health/karen/claude.ai-docs/archive/v1_sonnet46/21_Medical_Notes.md",
-        supersedes_sha256="deadbeef",
+        external_sources_access_date=date(2026, 1, 15),
+        supersedes="/data/sample/archive/v1/04_Sample_Notes.md",
+        supersedes_sha256="2222222222222222",
     )
     body = (
-        "> [verbatim from archive: 21_Medical_Notes.md lines 124-129]\n"
-        "> Crohn's carriers may face roughly twofold risk; clinicians should consider screening.\n"
+        "> [verbatim from archive: 04_Sample_Notes.md lines 124-129]\n"
+        "> Sample-condition carriers may face roughly twofold risk; clinicians should consider screening.\n"
     )
     doc = Document(
-        path=tmp_path / "21_Medical_Notes.md",
+        path=tmp_path / "04_Sample_Notes.md",
         provenance=prov,
-        title="Medical Notes",
-        sections=(Section(heading="Crohn's Disease Monitoring Protocol", body_md=body),),
+        title="Sample Notes",
+        sections=(Section(heading="Sample Condition Monitoring Protocol", body_md=body),),
     )
     written = render.write_doc(doc, archive_dir=tmp_path / "archive", also_html=True)
-    assert (tmp_path / "21_Medical_Notes.md").exists()
-    assert "verbatim from archive" in (tmp_path / "21_Medical_Notes.md").read_text(encoding="utf-8")
+    assert (tmp_path / "04_Sample_Notes.md").exists()
+    assert "verbatim from archive" in (tmp_path / "04_Sample_Notes.md").read_text(encoding="utf-8")
     assert written["html"].endswith(".html")
