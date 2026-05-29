@@ -472,10 +472,10 @@ def _archive_quote_line_flags(lines: Sequence[str]) -> list[bool]:
     SPEC Rule 1 permits aspirational tokens "inside verbatim quotes from archive
     docs (clearly demarcated with markdown blockquote ``>`` and an inline
     ``[verbatim from archive...]`` attribution)" — i.e. the whole *blockquote* is
-    exempt, not merely the line carrying the attribution marker. Karen's Phase 5
-    (``21_Medical_Notes.md``) and Phase 7 (``CHECKPOINT_LOG.md``) preserved
-    multi-line attributed quotes whose continuation lines carry aspirational
-    wording; without this the renderer's write gate would refuse to write them.
+    exempt, not merely the line carrying the attribution marker. A re-audit's
+    medical-notes and checkpoint-log rebuilds preserve multi-line attributed
+    quotes whose continuation lines carry aspirational wording; without this the
+    renderer's write gate would refuse to write them.
 
     A blockquote run is a maximal run of consecutive lines whose ``lstrip``
     starts with ``>`` (matching ``render._md_blocks_to_html``'s grouping). The run
