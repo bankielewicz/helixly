@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Methodology &amp; Provenance — HelixlyAI</title>
+<title>Drug Metabolism (CYP450) — HelixlyAI</title>
 
 <!-- Provenance fields mirrored as meta (machine-readable) -->
-<meta name="provenance:document" content="Methodology &amp; Provenance">
+<meta name="provenance:document" content="Drug Metabolism (CYP450)">
 <meta name="provenance:assembly" content="GRCh37">
 <meta name="provenance:source_sha256" content="0000a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e">
 <meta name="provenance:supersedes" content="prior v1 (SHA 1111f0e9d8c7b6a5...)">
-<meta name="provenance:sources" content="CPIC, dbSNP, PubMed">
+<meta name="provenance:sources" content="CPIC, PharmGKB, dbSNP, PubMed">
 <meta name="provenance:access_date" content="2026-01-15">
 <meta name="provenance:subject" content="Sample Subject (synthetic)">
 <meta name="robots" content="noindex">
-<meta name="description" content="HelixlyAI Methodology &amp; Provenance — how a report is built: assembly, hashing, evidence grading, and supersession. Synthetic demonstration.">
+<meta name="description" content="HelixlyAI Drug Metabolism (CYP450) — cytochrome P450 metabolizer status across major enzyme families. Synthetic demonstration report. All values fictional.">
 
 <style>
 /* ============================================================
@@ -371,13 +371,13 @@ footer.site .bottom .b{max-width:1340px;margin:0 auto;padding:14px 40px;font-siz
     <div class="navgroup">
       <div class="gh">Overview</div>
       <a class="navlink" href="Executive Summary.html"><span class="dot"></span>Executive Summary<span class="ct">12</span></a>
-      <a class="navlink active" href="#" aria-current="page"><span class="dot"></span>Methodology &amp; Provenance</a>
+      <a class="navlink" href="Methodology Provenance.html"><span class="dot"></span>Methodology &amp; Provenance</a>
       <a class="navlink" href="Glossary.html"><span class="dot"></span>Glossary</a>
     </div>
     <div class="navgroup">
       <div class="gh">Pharmacology</div>
       <a class="navlink t1" href="Pharmacogenomics Analysis.html"><span class="dot"></span>Pharmacogenomics<span class="ct">5</span></a>
-      <a class="navlink" href="Drug Metabolism CYP450.html"><span class="dot"></span>Drug Metabolism (CYP450)<span class="ct">7</span></a>
+      <a class="navlink active t1" href="#" aria-current="page"><span class="dot"></span>Drug Metabolism (CYP450)<span class="ct">7</span></a>
       <a class="navlink" href="sample-report.html"><span class="dot"></span>Caffeine Metabolism</a>
     </div>
     <div class="navgroup">
@@ -413,19 +413,19 @@ footer.site .bottom .b{max-width:1340px;margin:0 auto;padding:14px 40px;font-siz
       <nav class="crumb" aria-label="Breadcrumb">
         <a href="sample-report.html">HelixlyAI Report</a>
         <span class="sep">/</span>
-        <a href="sample-report.html">Overview</a>
+        <a href="sample-report.html">Pharmacology</a>
         <span class="sep">/</span>
-        <span class="cur">Methodology &amp; Provenance</span>
+        <span class="cur">Drug Metabolism (CYP450)</span>
       </nav>
 
       <div class="dochead">
-        <div class="kicker">Overview · Document 02 of 24</div>
-        <h1>Methodology &amp; Provenance</h1>
-        <p class="sub">How a HelixlyAI report is built: source assembly, hashing, evidence grading, and supersession. This page documents the pipeline and contains no personal findings. All values shown are synthetic and for demonstration only.</p>
+        <div class="kicker">Pharmacology · Document 05 of 24</div>
+        <h1>Drug Metabolism (CYP450)</h1>
+        <p class="sub"><b>Sample Subject</b>'s cytochrome P450 metabolizer status across the major drug-metabolizing enzyme families, with provider-ready, evidence-graded recommendations. All values below are synthetic and for demonstration only.</p>
         <div class="facts">
-          <span>Assembly <b>GRCh37</b></span>
-          <span><b>8</b> allow-list sources</span>
-          <span>Evidence tiers <b>1–3</b></span>
+          <span><b>7</b> findings</span>
+          <span><b>3</b> Tier 1</span>
+          <span><b>6</b> CPIC Level A</span>
           <span>Reviewed <b>2026-01-15</b></span>
         </div>
       </div>
@@ -440,67 +440,252 @@ footer.site .bottom .b{max-width:1340px;margin:0 auto;padding:14px 40px;font-siz
             <span class="v">verified chain</span>
           </div>
           <dl>
-            <div class="row"><dt>Document</dt><dd>Methodology &amp; Provenance</dd></div>
+            <div class="row"><dt>Document</dt><dd>Drug Metabolism (CYP450)</dd></div>
             <div class="row"><dt>Source assembly</dt><dd>GRCh37 <span style="color:var(--faint)">(hg19)</span></dd></div>
             <div class="row"><dt>Source file SHA-256</dt><dd><span class="sha">0000a1b2c3d4e5f6…4b5c6d7e</span></dd></div>
-            <div class="row"><dt>INDEX SHA-256</dt><dd><span class="sha">2222b3c4d5e6f708…9a0b1c2d</span></dd></div>
             <div class="row"><dt>Supersedes</dt><dd>prior v1 · SHA <span class="sha">1111f0e9…</span></dd></div>
-            <div class="row"><dt>Evidence sources</dt><dd><a href="https://cpicpgx.org/" rel="external" data-access-date="2026-01-15">CPIC</a>, <a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external" data-access-date="2026-01-15">dbSNP</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed</a></dd></div>
+            <div class="row"><dt>Evidence sources</dt><dd><a href="https://cpicpgx.org/" rel="external" data-access-date="2026-01-15">CPIC</a>, <a href="https://www.pharmgkb.org/" rel="external" data-access-date="2026-01-15">PharmGKB</a>, <a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external" data-access-date="2026-01-15">dbSNP</a>, <a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed</a></dd></div>
             <div class="row"><dt>Access date</dt><dd>2026-01-15</dd></div>
           </dl>
         </div>
       </section>
 
-      <!-- ===== SOURCE & ASSEMBLY ===== -->
-      <section class="sect" aria-labelledby="src-h">
-        <h2 id="src-h">Source &amp; Assembly</h2>
-        <p>A HelixlyAI report is built from a single consumer DNA export. The pipeline aligns every call to the <b>GRCh37/hg19</b> assembly and builds a genotype-truth <b>INDEX</b> directly from the raw chip file. Each genotype shown on every page resolves to one row in that INDEX, identified by its rsID and chromosome position.</p>
+      <!-- ===== PROVIDER ALERT CARD ===== -->
+      <section class="sect" aria-labelledby="alert-h">
+        <h2 id="alert-h">Provider Alert</h2>
+        <div class="alert" role="region" aria-label="Actionable pharmacogenomic findings">
+          <div class="ah">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0z"/></svg>
+            <span class="t">Actionable Findings — Provider Ready</span>
+            <span class="meta">5 drugs · review before prescribing</span>
+          </div>
+          <div class="alert-tablewrap">
+            <table class="alert-tbl">
+              <thead>
+                <tr><th>Drug</th><th>Gene / Genotype</th><th>Evidence</th><th>Recommendation</th><th>Source</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="drug">Codeine</td>
+                  <td class="gg">CYP2D6<br>(rs3892097 AA)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Poor metabolizer; codeine provides inadequate analgesia; select a non-CYP2D6 analgesic. Consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">Clopidogrel</td>
+                  <td class="gg">CYP2C19<br>(rs4244285 GA)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Intermediate metabolizer; reduced activation of clopidogrel; an alternative antiplatelet agent is appropriate. Consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">Warfarin</td>
+                  <td class="gg">CYP2C9 + VKORC1<br>(rs1799853 CT / rs9923231 TT)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Increased sensitivity; a reduced initiation dose with INR monitoring maintains target INR. Consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">Tacrolimus</td>
+                  <td class="gg">CYP3A5<br>(rs776746 GG)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Non-expresser; standard per-kg dosing reaches target troughs. Consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+                <tr>
+                  <td class="drug">Fluorouracil</td>
+                  <td class="gg">DPYD<br>(rs3918290 CC)</td>
+                  <td><span class="ev a">CPIC Level A</span></td>
+                  <td class="rec">Normal DPD activity; standard fluoropyrimidine dosing applies. Consult your prescribing clinician.</td>
+                  <td><a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC&nbsp;↗</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
-      <!-- ===== HASHING & PROVENANCE ===== -->
-      <section class="sect" aria-labelledby="hash-h">
-        <h2 id="hash-h">Hashing &amp; Provenance</h2>
-        <p>Every document records the <b>SHA-256</b> of its source export and the SHA-256 of the generated INDEX; both hashes appear in the provenance block at the top of each page. When a document replaces an earlier version, the prior hash is recorded under <b>Supersedes</b>, so the chain from raw file to rendered claim stays auditable.</p>
+      <!-- ===== PER-FINDING BLOCKS ===== -->
+      <section class="sect" aria-labelledby="find-h">
+        <h2 id="find-h">Per-Gene Findings</h2>
+
+        <div class="filters" role="group" aria-label="Filter findings by significance tier">
+          <span class="fl">Filter:</span>
+          <button class="chip on" data-tier="all" type="button">All <span class="n">7</span></button>
+          <button class="chip" data-tier="1" type="button">Tier 1 <span class="n">3</span></button>
+          <button class="chip" data-tier="2" type="button">Tier 2 <span class="n">3</span></button>
+          <button class="chip" data-tier="3" type="button">Tier 3 <span class="n">1</span></button>
+        </div>
+
+        <div class="finding t1" data-tier="1">
+          <div class="fh">
+            <div>
+              <h3>CYP2D6 — Poor Metabolizer</h3>
+              <div class="fn">Cytochrome P450 2D6 · enzyme activity</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t1">Tier 1</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs3892097" data-chrom="22" data-pos="42524947" data-genotype="AA">rs3892097</code>
+              <code class="dna pos" data-rsid="rs3892097" data-chrom="22" data-pos="42524947">22:42,524,947</code>
+              <code class="dna gt" data-rsid="rs3892097" data-genotype="AA">AA</code>
+            </span>
+          </div>
+          <p>Two no-function alleles define a <b>poor metabolizer</b> phenotype. Standard doses of CYP2D6 substrates produce elevated exposure relative to normal metabolizers.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC CYP2D6 Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs3892097" rel="external" data-access-date="2026-01-15">dbSNP rs3892097 ↗</a></div>
+        </div>
+
+        <div class="finding t1" data-tier="1">
+          <div class="fh">
+            <div>
+              <h3>CYP2C19 — Intermediate Metabolizer</h3>
+              <div class="fn">Cytochrome P450 2C19 · prodrug activation</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t1">Tier 1</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs4244285" data-chrom="10" data-pos="96541616" data-genotype="GA">rs4244285</code>
+              <code class="dna pos" data-rsid="rs4244285" data-chrom="10" data-pos="96541616">10:96,541,616</code>
+              <code class="dna gt" data-rsid="rs4244285" data-genotype="GA">GA</code>
+            </span>
+          </div>
+          <p>One loss-of-function allele defines an <b>intermediate metabolizer</b> phenotype, which reduces activation of clopidogrel to its active form.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC CYP2C19 Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs4244285" rel="external" data-access-date="2026-01-15">dbSNP rs4244285 ↗</a></div>
+        </div>
+
+        <div class="finding t1" data-tier="1">
+          <div class="fh">
+            <div>
+              <h3>CYP2C9 — Reduced Function</h3>
+              <div class="fn">Cytochrome P450 2C9 · warfarin clearance</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t1">Tier 1</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs1799853" data-chrom="10" data-pos="96702047" data-genotype="CT">rs1799853</code>
+              <code class="dna pos" data-rsid="rs1799853" data-chrom="10" data-pos="96702047">10:96,702,047</code>
+              <code class="dna gt" data-rsid="rs1799853" data-genotype="CT">CT</code>
+            </span>
+          </div>
+          <p>One reduced-function allele lowers warfarin clearance. A lower maintenance dose maintains the target INR for this genotype.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC CYP2C9 Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs1799853" rel="external" data-access-date="2026-01-15">dbSNP rs1799853 ↗</a></div>
+        </div>
+
+        <div class="finding t2" data-tier="2">
+          <div class="fh">
+            <div>
+              <h3>CYP3A5 — Non-expresser</h3>
+              <div class="fn">Cytochrome P450 3A5 · tacrolimus exposure</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t2">Tier 2</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs776746" data-chrom="7" data-pos="99270539" data-genotype="GG">rs776746</code>
+              <code class="dna pos" data-rsid="rs776746" data-chrom="7" data-pos="99270539">7:99,270,539</code>
+              <code class="dna gt" data-rsid="rs776746" data-genotype="GG">GG</code>
+            </span>
+          </div>
+          <p>The GG genotype defines a <b>non-expresser</b>. Standard per-kilogram tacrolimus dosing reaches target trough concentrations.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC CYP3A5 Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs776746" rel="external" data-access-date="2026-01-15">dbSNP rs776746 ↗</a></div>
+        </div>
+
+        <div class="finding t2" data-tier="2">
+          <div class="fh">
+            <div>
+              <h3>CYP1A2 — Intermediate Metabolizer</h3>
+              <div class="fn">Cytochrome P450 1A2 · caffeine clearance</div>
+            </div>
+            <div class="badges"><span class="ev b">PharmGKB</span><span class="tier t2">Tier 2</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs762551" data-chrom="15" data-pos="75041917" data-genotype="AC">rs762551</code>
+              <code class="dna pos" data-rsid="rs762551" data-chrom="15" data-pos="75041917">15:75,041,917</code>
+              <code class="dna gt" data-rsid="rs762551" data-genotype="AC">AC</code>
+            </span>
+          </div>
+          <p>The AC genotype defines <b>intermediate caffeine metabolism</b>, with slower clearance than the AA (rapid) genotype.</p>
+          <div class="cite">Source: <a href="https://www.pharmgkb.org/" rel="external" data-access-date="2026-01-15">PharmGKB CYP1A2 ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs762551" rel="external" data-access-date="2026-01-15">dbSNP rs762551 ↗</a></div>
+        </div>
+
+        <div class="finding t2" data-tier="2">
+          <div class="fh">
+            <div>
+              <h3>VKORC1 — High Warfarin Sensitivity</h3>
+              <div class="fn">Vitamin K epoxide reductase · warfarin target</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t2">Tier 2</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs9923231" data-chrom="16" data-pos="31107689" data-genotype="TT">rs9923231</code>
+              <code class="dna pos" data-rsid="rs9923231" data-chrom="16" data-pos="31107689">16:31,107,689</code>
+              <code class="dna gt" data-rsid="rs9923231" data-genotype="TT">TT</code>
+            </span>
+          </div>
+          <p>The TT genotype confers <b>high warfarin sensitivity</b>. A low initiation dose is appropriate for this genotype.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC Warfarin Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs9923231" rel="external" data-access-date="2026-01-15">dbSNP rs9923231 ↗</a></div>
+        </div>
+
+        <div class="finding t3" data-tier="3">
+          <div class="fh">
+            <div>
+              <h3>DPYD — Normal Activity</h3>
+              <div class="fn">Dihydropyrimidine dehydrogenase · fluoropyrimidine clearance</div>
+            </div>
+            <div class="badges"><span class="ev a">CPIC Level A</span><span class="tier t3">Tier 3</span></div>
+          </div>
+          <div class="triple-row">
+            <span class="triple">
+              <code class="dna rs" data-rsid="rs3918290" data-chrom="1" data-pos="97915614" data-genotype="CC">rs3918290</code>
+              <code class="dna pos" data-rsid="rs3918290" data-chrom="1" data-pos="97915614">1:97,915,614</code>
+              <code class="dna gt" data-rsid="rs3918290" data-genotype="CC">CC</code>
+            </span>
+          </div>
+          <p>The CC (reference) genotype defines <b>normal DPD activity</b>. Standard fluoropyrimidine dosing applies for this genotype.</p>
+          <div class="cite">Source: <a href="https://cpicpgx.org/guidelines/" rel="external" data-access-date="2026-01-15">CPIC DPYD Guideline ↗</a> · <a href="https://www.ncbi.nlm.nih.gov/snp/rs3918290" rel="external" data-access-date="2026-01-15">dbSNP rs3918290 ↗</a></div>
+        </div>
       </section>
 
-      <!-- ===== EVIDENCE GRADING ===== -->
-      <section class="sect" aria-labelledby="grade-h">
-        <h2 id="grade-h">Evidence Grading</h2>
-        <p>Every statement carries a significance tier and an evidence grade:</p>
-        <ul>
-          <li><b>Tier 1</b> — variants with established clinical action.</li>
-          <li><b>Tier 2</b> — variants with moderate or emerging evidence.</li>
-          <li><b>Tier 3</b> — variants reported for transparency; current evidence is insufficient for clinical action.</li>
-        </ul>
-        <p>CPIC assigns drug–gene guidance <b>Levels A–D</b>, where Level A reflects the strongest prescribing evidence. Each statement ties to an INDEX rsID and the observed genotype, cites an allow-list source, and is written in the present tense.</p>
-      </section>
-
-      <!-- ===== ALLOW-LIST SOURCES ===== -->
-      <section class="sect" aria-labelledby="src2-h">
-        <h2 id="src2-h">Allow-list Sources</h2>
-        <p>A HelixlyAI report cites only these eight authoritative sources:</p>
-        <ul>
-          <li><a href="https://pubmed.ncbi.nlm.nih.gov/" rel="external" data-access-date="2026-01-15">PubMed ↗</a> — primary literature.</li>
-          <li><a href="https://www.ncbi.nlm.nih.gov/clinvar/" rel="external" data-access-date="2026-01-15">ClinVar ↗</a> — variant clinical significance.</li>
-          <li><a href="https://cpicpgx.org/" rel="external" data-access-date="2026-01-15">CPIC ↗</a> — pharmacogenomic prescribing guidelines.</li>
-          <li><a href="https://www.pharmgkb.org/" rel="external" data-access-date="2026-01-15">PharmGKB ↗</a> — gene–drug knowledge base.</li>
-          <li><a href="https://www.fda.gov/drugs/science-and-research-drugs/table-pharmacogenomic-biomarkers-drug-labeling" rel="external" data-access-date="2026-01-15">FDA PGx ↗</a> — pharmacogenomic biomarkers in drug labeling.</li>
-          <li><a href="https://www.ebi.ac.uk/gwas/" rel="external" data-access-date="2026-01-15">GWAS Catalog ↗</a> — trait–variant associations.</li>
-          <li><a href="https://www.ncbi.nlm.nih.gov/snp/" rel="external" data-access-date="2026-01-15">dbSNP ↗</a> — variant identifiers and positions.</li>
-          <li><a href="https://gnomad.broadinstitute.org/" rel="external" data-access-date="2026-01-15">gnomAD ↗</a> — population allele frequencies.</li>
-        </ul>
+      <!-- ===== GENOTYPE TABLE ===== -->
+      <section class="sect" aria-labelledby="gt-h">
+        <h2 id="gt-h">Genotype Table</h2>
+        <div class="gtwrap">
+          <div class="gtscroll">
+            <table class="gt">
+              <caption>Variants evaluated in this document — synthetic</caption>
+              <thead>
+                <tr><th scope="col">rsID</th><th scope="col">chr:pos</th><th scope="col">Genotype</th><th scope="col">Gene</th><th scope="col">Significance</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><code class="dna rs" data-rsid="rs3892097" data-chrom="22" data-pos="42524947" data-genotype="AA">rs3892097</code></td><td>22:42,524,947</td><td>AA</td><td class="gene">CYP2D6</td><td><span class="minitier t1">Tier 1</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs4244285" data-chrom="10" data-pos="96541616" data-genotype="GA">rs4244285</code></td><td>10:96,541,616</td><td>GA</td><td class="gene">CYP2C19</td><td><span class="minitier t1">Tier 1</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs1799853" data-chrom="10" data-pos="96702047" data-genotype="CT">rs1799853</code></td><td>10:96,702,047</td><td>CT</td><td class="gene">CYP2C9</td><td><span class="minitier t1">Tier 1</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs776746" data-chrom="7" data-pos="99270539" data-genotype="GG">rs776746</code></td><td>7:99,270,539</td><td>GG</td><td class="gene">CYP3A5</td><td><span class="minitier t2">Tier 2</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs762551" data-chrom="15" data-pos="75041917" data-genotype="AC">rs762551</code></td><td>15:75,041,917</td><td>AC</td><td class="gene">CYP1A2</td><td><span class="minitier t2">Tier 2</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs9923231" data-chrom="16" data-pos="31107689" data-genotype="TT">rs9923231</code></td><td>16:31,107,689</td><td>TT</td><td class="gene">VKORC1</td><td><span class="minitier t2">Tier 2</span></td></tr>
+                <tr><td><code class="dna rs" data-rsid="rs3918290" data-chrom="1" data-pos="97915614" data-genotype="CC">rs3918290</code></td><td>1:97,915,614</td><td>CC</td><td class="gene">DPYD</td><td><span class="minitier t3">Tier 3</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <!-- ===== DISCLAIMER ===== -->
       <div class="disclaimer" role="note">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
-        <div class="tx"><b>Methodology &amp; provenance.</b> This HelixlyAI report is a synthetic demonstration generated from a consumer DNA export. It documents how findings are produced and is not a diagnosis, prescription, or substitute for professional medical advice. For any health decision, consult your prescribing clinician.</div>
+        <div class="tx"><b>Consult your prescribing clinician.</b> This HelixlyAI report is a synthetic demonstration generated from a consumer DNA export. It is not a diagnosis, prescription, or substitute for professional medical advice. Do not start, stop, or change any medication based on this document. Genotype is one of many factors influencing drug response.</div>
       </div>
 
       <!-- ===== PAGER ===== -->
       <nav class="pager" aria-label="Document pager">
-        <a class="prev" href="Executive Summary.html"><div class="dir">← Previous</div><div class="nm">Executive Summary</div></a>
-        <a class="next" href="Pharmacogenomics Analysis.html"><div class="dir">Next →</div><div class="nm">Pharmacogenomics Analysis</div></a>
+        <a class="prev" href="Pharmacogenomics Analysis.html"><div class="dir">← Previous</div><div class="nm">Pharmacogenomics Analysis</div></a>
+        <a class="next" href="MTHFR Methylation.html"><div class="dir">Next →</div><div class="nm">MTHFR / Methylation</div></a>
       </nav>
 
     </article>
