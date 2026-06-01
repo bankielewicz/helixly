@@ -163,6 +163,22 @@ Writes `<input>.variants.xlsx` next to the input. Sheets: `summary`,
 `by_chromosome`, `top_quality` (top 100 by QUAL), `frameshift_candidates`
 (indel length not divisible by 3), `filtered_out`.
 
+## Python API
+
+In addition to the CLIs above, the consumer-DNA helpers are importable as a
+stable module. Put `scripts/` on `sys.path` (the same entry the CLIs use), then:
+
+    import sys
+    sys.path.insert(0, "<path-to-genome-reader>/scripts")
+    from consumer_dna import iter_consumer_dna, detect_consumer_dna_build
+
+- `iter_consumer_dna(path)` — yields `(rsid, chrom, pos, genotype)` string
+  4-tuples from any supported consumer-DNA export (23andMe / AncestryDNA / MyHeritage).
+- `detect_consumer_dna_build(path)` — returns `"GRCh37"`, `"GRCh38"`, or `None`
+  by sniffing the file's header comments.
+
+Import from `consumer_dna` (no leading underscore) — not from `_common`.
+
 ## Reference data
 
 Bundled under `assets/`:
