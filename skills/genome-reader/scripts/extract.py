@@ -84,6 +84,24 @@ def extract_intervals(path: str, chrom: str, start: int, end: int, fmt: str) -> 
     return 0
 
 
+def extract_consumer_dna(path: str, chrom: str, start: int, end: int) -> int:
+    # Consumer DNA exports (23andMe/AncestryDNA/MyHeritage) are sparse SNP rows,
+    # not contiguous intervals: emit each genotyped SNP whose position falls in
+    # the 1-based inclusive window, in the substrate's (rsid, chrom, pos, genotype)
+    # order. No-call genotypes are kept verbatim — extract is positional.
+    from _common import iter_consumer_dna
+    for rsid, c, pos, genotype in iter_consumer_dna(path):
+        if c != chrom:
+            continue
+        try:
+            p = int(pos)
+        except ValueError:
+            continue
+        if start <= p <= end:
+            sys.stdout.write(f"{rsid}\t{c}\t{pos}\t{genotype}\n")
+    return 0
+
+
 def main(argv: list[str]) -> int:
     path, flags = parse_flat_args(argv[1:], {"--region"})
     if path is None or "--region" not in flags:
@@ -106,6 +124,8 @@ def main(argv: list[str]) -> int:
         return extract_bam(path, chrom, start, end)
     if fmt in {"bed", "gff", "gtf"}:
         return extract_intervals(path, chrom, start, end, fmt)
+    if fmt.startswith("consumer_dna:"):
+        return extract_consumer_dna(path, chrom, start, end)
     die(f"extract not supported for format: {fmt}")
     return 2
 

@@ -102,9 +102,11 @@ Pass `--json` for machine-readable output.
 
 Region uses 1-based, inclusive coordinates. Works on FASTA (sequence), VCF
 (variants in window), BAM (reads in window), GFF/GTF/BED (features
-overlapping the window). Builds the `.fai` / `.tbi` / `.bai` index if
-missing and the directory is writable; otherwise reports the missing
-index and exits.
+overlapping the window), and consumer DNA exports — 23andMe / AncestryDNA /
+MyHeritage — emitting each SNP whose position falls in the window as a
+`rsid<TAB>chrom<TAB>pos<TAB>genotype` row (no header; no-call genotypes are
+kept verbatim). Builds the `.fai` / `.tbi` / `.bai` index if missing and the
+directory is writable; otherwise reports the missing index and exits.
 
 ### convert.py — format conversion
 
