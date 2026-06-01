@@ -1,0 +1,22 @@
+# Enforce LF line endings in the repository and on checkout.
+# The repo is text except for the binary fixtures listed below.
+# Without this, editors on /mnt/c (Windows) rewrite files as CRLF and
+# every line shows as changed in git diff.
+* text=auto eol=lf
+
+# Binary fixtures — never normalize or diff as text
+*.bam binary
+
+# Common binary types (safety net for future assets)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.pdf  binary
+*.zip  binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
