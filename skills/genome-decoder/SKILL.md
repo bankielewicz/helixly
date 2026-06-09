@@ -11,9 +11,12 @@ re-audited, evidence-graded, self-contained **HelixyAI HTML report**. It is the
 second of two skills: it consumes `genome-reader` as a parsing substrate and adds
 the interpretation, provenance, citation, and audit discipline on top.
 
-**The binding contract is the SPEC**, bundled with the reference implementation at
-`SPEC_genome_audit_workflow.md`. Where this file and the SPEC differ, the SPEC
-wins. Read it before executing any phase.
+**The binding contract is the SPEC**, bundled in this skill at
+`SPEC_genome_audit_workflow.md` (alongside this file). Where this file and the
+SPEC differ, the SPEC wins. Read it before executing any phase. The bundled copy
+is the sanitized v1.1 contract — same contract, subject-identifying data removed
+and replaced by synthetic placeholders; the skill needs no private subject
+archive to resolve it.
 
 ## When to use
 
@@ -69,14 +72,14 @@ Each phase is atomic. Apply the **Non-Negotiable Rules** below and the SPEC's
 
 | Phase | What | Tooling |
 |---|---|---|
-| 0 | Spec, archive, **genotype-truth INDEX** | `index_build.py` (deterministic) ⏳ |
-| 1 | Provenance & aspirational-claim **audit** (read-only) | `audit.py` (mechanical findings + *provisional* disposition; the agent decides + authors the report) ⏳ |
-| 2 | Cross-doc corrections + provenance headers | `rebuild.py` (agent-authored, gated write) ⏳ |
-| 3 | Pharmacogenomics rebuild | `rebuild.py` + allow-list fetch ⏳ |
-| 4 | MTHFR / methylation expansion | `rebuild.py` ⏳ |
-| 5 | Project-specific medical-context integration (a passed-in `<project_context>.md`) | `rebuild.py` ⏳ |
-| 6 | Full net-new findings pass (ClinVar / ACMG SF / CPIC scan) | `discover.py` (candidate set only; the agent assigns tiers + resolves allele orientation) ⏳ |
-| 7 | Executive summary, checkpoint, **final verification** | `verify.py` (runs the SPEC Verification Commands) ⏳ |
+| 0 | Spec, archive, **genotype-truth INDEX** | `index_build.py` (deterministic) |
+| 1 | Provenance & aspirational-claim **audit** (read-only) | `audit.py` (mechanical findings + *provisional* disposition; the agent decides + authors the report) |
+| 2 | Cross-doc corrections + provenance headers | `rebuild.py` (agent-authored, gated write) |
+| 3 | Pharmacogenomics rebuild | `rebuild.py` + allow-list fetch |
+| 4 | MTHFR / methylation expansion | `rebuild.py` |
+| 5 | Project-specific medical-context integration (a passed-in `<project_context>.md`) | `rebuild.py` |
+| 6 | Full net-new findings pass (ClinVar / ACMG SF / CPIC scan) | `discover.py` (candidate set only; the agent assigns tiers + resolves allele orientation) |
+| 7 | Executive summary, checkpoint, **final verification** | `verify.py` (runs the SPEC Verification Commands) |
 
 Output is rendered at each step against the HelixyAI templates.
 
@@ -144,9 +147,17 @@ Tests are pure-Python and run without the substrate:
 
 ## Implementation status
 
-Built incrementally. **Present:** the foundation (`scripts/_common.py` — types +
-gates; `scripts/render.py` — legacy markdown/HTML), the structured report model,
-and the HelixyAI renderer (`scripts/report_render.py`) + templates. **Pending
-(⏳ above):** the deterministic phase tools `index_build.py`, `audit.py`,
-`discover.py`, `rebuild.py`, `verify.py`. Until they land, the interpretive phases
-are agent-driven against the SPEC, with the renderer producing the output.
+All components are present and covered by the bundled test suite (`tests/`,
+`python -m pytest tests/ -q`). **Foundation:** `scripts/_common.py` (types +
+gates), `scripts/render.py` (legacy markdown/HTML), the structured report model,
+and the HelixyAI renderer (`scripts/report_render.py`) + templates.
+**Deterministic phase tools:** `index_build.py` (Phase 0), `audit.py` (Phase 1),
+`rebuild.py` (Phases 2–5), `discover.py` (Phase 6), `verify.py` (Phase 7) — each
+with a matching `tests/test_*.py`.
+
+The scripts do the mechanical, reproducible work; the **agent** drives the
+interpretation against the SPEC and routes every write through the gated path.
+Per the architecture note above, scripts never author clinical prose — so the
+interpretive content of each phase is still agent-produced, with the tools
+supplying the INDEX, the audit findings, the candidate set, the verification
+results, and the rendered output.
